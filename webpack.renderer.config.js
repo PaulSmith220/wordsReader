@@ -15,7 +15,7 @@ const renderer = merge(base, {
     rules: [
       {
         test: /\.js$/,
-        exclude: [/node_modules/,],
+        exclude: [/node_modules/],
         use: {
           loader: 'babel-loader',
           options: {
@@ -23,26 +23,26 @@ const renderer = merge(base, {
           }
         }
       },
-      // {
-      //   test: /\.css$/,
-      //   exclude: [/node_modules/],
-      //   use: [
-      //     // 'style-loader',
-      //     "css-loader"
-      //   ]
-      // },
-      // {
-      //   test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-      //   use: [
-      //     {
-      //       loader: 'file-loader',
-      //       options: {
-      //         name: '[name].[ext]',
-      //         outputPath: 'fonts/'
-      //       }
-      //     }
-      //   ]
-      // }
+      {
+        test: /\.css$/,
+        exclude: [/node_modules/],
+        use: [
+          // 'style-loader',
+          "css-loader"
+        ]
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
+          }
+        ]
+      }
     ]
   },
   plugins: [

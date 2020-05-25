@@ -1,9 +1,9 @@
 const { ipcRenderer } = require('electron');
 import setList from './setList';
-import Dialogs from 'dialogs';
+// import Dialogs from 'dialogs';
 import readCurrentWord from './readCurrentWord';
 
-const dialogs = Dialogs();
+// const dialogs = Dialogs();
 
 export function selectWord(nextNode) {
     if (nextNode) {
@@ -47,13 +47,14 @@ export default function ({ words = [], lastLine = 0, }) {
     }, 10);
 
     document.getElementById('loadFile').addEventListener('click', () => {
-        dialogs.prompt('What is your languages delimiter?', ' - ', (value) => {
-            if (value) {
+        // dialogs.prompt('What is your languages delimiter?', ' - ', (value) => {
+        //     if (value) {
+            const value=' - ';
                 ipcRenderer.send('asynchronous-message', `loadFile||${value}`);
-            } else {
-                console.log('user cancelled');
-            }
-        });
+        //     } else {
+        //         console.log('user cancelled');
+        //     }
+        // });
 
     });
 

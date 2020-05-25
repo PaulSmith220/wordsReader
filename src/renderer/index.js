@@ -4,8 +4,8 @@ import setList from './setList';
 const path = require("path");
 const initPage = pageActions.default;
 
-// import './css/main.css';
-// import './assets/css/all.css';
+import './css/main.css';
+import './assets/css/all.css';
 
 const parseCommand = arg => {
     const [command, data] = arg.split('||');
