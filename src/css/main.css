@@ -1,0 +1,53 @@
+body {
+    background: #F5F5F6;
+    color: #444;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-container {
+    padding: 40vh 16px;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.word-item {
+    padding: 8px;
+    margin: 6px 20vw;
+    background-color: #E1E2E1;
+    transition: all 0.3s ease-out;
+    opacity: 0.2;
+    cursor: pointer;
+}
+
+.word-item.selected {
+    background-color: #808d94;
+    color: #fff;
+    box-shadow: 0 2px 2px rgba(0,0,0, 0.5);
+    z-index: 666;
+    transform: scale(1.5, 1.5);
+    position: relative;
+    opacity: 1;
+}
+
+
+header {
+    display: block;
+    position: sticky;
+    z-index: 999;
+    top: 0;
+    padding: 8px;
+
+    text-align: left;
+    font-size: 18px;
+    background-color: #afbdc4;
+}
+
+header > button {
+    float: right;
+    margin-right: 16px;
+}
