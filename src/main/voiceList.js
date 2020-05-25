@@ -1,6 +1,5 @@
-const { exec } = require("child_process");
-
-module.exports = function() {
+import { exec } from "child_process";
+export default function() {
     return new Promise((resolve) => {
         exec(`say -v '?'`, (error, out, err) => {
                 const voices = out.split('\n').map(line => {

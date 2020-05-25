@@ -10,7 +10,7 @@ const options = {
     message: 'The text should be in "English word - Russian word" format',
   };
 
-  module.exports = function() {
+  export default function() {
     return new Promise(async (resolve, reject) => {
         const { cancelled, filePaths } = await dialog.showOpenDialog(null, options);
         if (cancelled || !filePaths.length) {

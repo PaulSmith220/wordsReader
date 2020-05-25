@@ -1,4 +1,4 @@
-const { exec } = require("child_process");
+import { exec } from "child_process";
 
 function readEnglish(word) {
 	return new Promise((resolve) => {
@@ -36,7 +36,7 @@ function delay(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-module.exports = async function(word) {
+export default async function(word) {
         await readEnglish(word[0]);
         await delay(500);
         await readRussian(word[1]);

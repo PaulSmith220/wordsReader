@@ -1,13 +1,13 @@
-const { ipcMain } = require('electron');
-const getVoices = require('./voiceList');
-const openFileDialog = require('./openFileDialog');
-const parseFile = require('./parseFiles');
-const readWord = require('./readWord');
+import { ipcMain } from 'electron';
+import getVoices from './voiceList';
+import openFileDialog from './openFileDialog';
+import parseFile from './parseFiles';
+import readWord from './readWord';
 
 const response = (name, data = null) => name + '||' + JSON.stringify(data);
 
 
-module.exports = function(store, mainWindow) {
+export default function(store, mainWindow) {
     ipcMain.on('asynchronous-message', async (event, arg) => {
         console.log('event recieved: ' + arg);
         const [command, args] = arg.split('||');

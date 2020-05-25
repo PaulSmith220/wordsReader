@@ -1,9 +1,11 @@
 const { ipcRenderer } = require('electron');
+import pageActions from './initPage';
+import setList from './setList';
 const path = require("path");
-const pageActions = require(path.resolve('src/renderer/initPage'));
-const setList = require(path.resolve('src/renderer/setList'));
-
 const initPage = pageActions.default;
+
+// import './css/main.css';
+// import './assets/css/all.css';
 
 const parseCommand = arg => {
     const [command, data] = arg.split('||');

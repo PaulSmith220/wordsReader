@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron');
 
-module.exports = function() {
+export default function() {
     const node = document.querySelector('.word-item.selected');
     if (node) {
         const original = node.dataset['orig'];
