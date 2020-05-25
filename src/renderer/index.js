@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron');
 const path = require("path");
-const pageActions = require(path.resolve('src/page/initPage'));
-const setList = require(path.resolve('src/page/setList'));
+const pageActions = require(path.resolve('src/renderer/initPage'));
+const setList = require(path.resolve('src/renderer/setList'));
 
 const initPage = pageActions.default;
 
@@ -19,6 +19,17 @@ let config = {
 };
 
 let isPlaying = false;
+
+const mainCss = document.createElement('link');
+mainCss.rel = 'stylesheet';
+mainCss.href = path.resolve(__dirname, 'css', 'main.css');
+document.head.appendChild(mainCss);
+
+const fontCss = document.createElement('link');
+fontCss.rel = 'stylesheet';
+fontCss.href = path.resolve(__dirname, 'assets', 'css', 'all.css');
+document.head.appendChild(fontCss);
+
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('play').addEventListener('click', function() {

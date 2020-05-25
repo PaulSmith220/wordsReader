@@ -17,12 +17,14 @@ function selectWord(nextNode) {
 
 function scrollToSelected(jump = false) {
     const selectedNode = document.querySelector('.word-item.selected');
-    const vOffset = selectedNode.offsetTop - parseInt(window.innerHeight / 2);
-    window.scrollTo({
-        top: vOffset,
-        left: 0,
-        behavior: jump ? 'instant' : 'smooth'
-    });
+    if (selectedNode) {
+        const vOffset = selectedNode.offsetTop - parseInt(window.innerHeight / 2);
+        window.scrollTo({
+            top: vOffset,
+            left: 0,
+            behavior: jump ? 'instant' : 'smooth'
+        });
+    }
 }
 
 function selectNext() {
