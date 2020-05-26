@@ -23,11 +23,12 @@ function createWindow () {
   })
   initEvents(store, win);
   // and load the index.html of the app.
-  win.loadFile('index.html'
+  win.loadFile(
+    path.join(__dirname, 'index.html')
     // url.format({
     //   pathname: 'index.html',
     //   protocol: "file:",
-    //   slashes: true,
+    //   slashes: false,
     // })
   );
 

@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "pack": "electron-builder --dir",
-    "dist": "npm run clean && webpack -p electron-builder",
+    "dist": "npm run clean && webpack -p && electron-builder",
     "postinstall": "electron-builder install-app-deps",
     "clean": "rimraf build",
     "dev": "npm run clean && webpack",
@@ -13,19 +13,22 @@
     "start": "electron build/main.js"
   },
   "build": {
+    "asar": false,
+    "extends": null,
+    "extraMetadata": {
+      "main": "build/main.js"
+    },
     "appId": "com.example.wordsReader",
     "mac": {
       "category": "education",
-      "icon": "src/assets/research.png"
+      "icon": "./icon.png",
+      "target": ["dmg"]
     },
     "files": [
-      "app/**/*",
-      "node_modules/**/*",
-      "package.json"
+      "*.js",
+  "build",
+  "node_modules"
     ],
-    "directories": {
-      "buildResources": "resources"
-    },
     "publish": null
   },
   "devDependencies": {

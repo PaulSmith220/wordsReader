@@ -161,13 +161,13 @@ module.exports = _asyncToGenerator;
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("child_process");
+module.exports = require("path");
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("path");
+module.exports = require("child_process");
 
 /***/ }),
 /* 6 */
@@ -1052,7 +1052,7 @@ var external_electron_ = __webpack_require__(0);
 var external_electron_default = /*#__PURE__*/__webpack_require__.n(external_electron_);
 
 // EXTERNAL MODULE: external "path"
-var external_path_ = __webpack_require__(5);
+var external_path_ = __webpack_require__(4);
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
@@ -1068,7 +1068,7 @@ var asyncToGenerator = __webpack_require__(3);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // EXTERNAL MODULE: external "child_process"
-var external_child_process_ = __webpack_require__(4);
+var external_child_process_ = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./src/main/voiceList.js
 
@@ -1144,7 +1144,7 @@ var options = {
 // CONCATENATED MODULE: ./src/main/parseFiles.js
 
 
-var path = __webpack_require__(5);
+var path = __webpack_require__(4);
 
 var fs = __webpack_require__(6);
 
@@ -1427,10 +1427,10 @@ function createWindow() {
   });
   eventsManager(main_store, win); // and load the index.html of the app.
 
-  win.loadFile('index.html' // url.format({
+  win.loadFile(external_path_default.a.join(__dirname, 'index.html') // url.format({
   //   pathname: 'index.html',
   //   protocol: "file:",
-  //   slashes: true,
+  //   slashes: false,
   // })
   ); // Отображаем средства разработчика.
   // win.webContents.openDevTools();
