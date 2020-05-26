@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 export default function() {
-    return new Promise((resolve) => {
-        exec(`say -v '?'`, (error, out, err) => {
+    return new Promise(function(resolve) {
+        exec(`say -v '?'`, function(error, out, err) {
                 const voices = out.split('\n').map(line => {
                         const [name, code] = line.replace(/\t/g, ' ').replace(/\s{1,}/g, ' ').split(' ');
                        return { name, code };

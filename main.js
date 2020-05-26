@@ -41,11 +41,11 @@ function createWindow () {
 app.whenReady().then(createWindow)
 
 // Quit when all windows are closed.
-app.on('window-all-closed', () => {
+app.on('window-all-closed', function() {
   app.quit();
 })
 
-app.on('activate', () => {
+app.on('activate', function() {
    // На MacOS обычно пересоздают окно в приложении,
    // после того, как на иконку в доке нажали и других открытых окон нету.
   if (BrowserWindow.getAllWindows().length === 0) {

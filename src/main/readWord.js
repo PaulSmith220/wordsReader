@@ -1,8 +1,8 @@
 import { exec } from "child_process";
 
 function readEnglish(word) {
-	return new Promise((resolve) => {
-		exec(`say -v Allison "${word}"`, (error, out, err) => {
+	return new Promise(function(resolve) {
+		exec(`say -v Allison "${word}"`, function(error, out, err) {
 			resolve(word);
 			if (error) {
 				console.log("error", error.message);
@@ -17,8 +17,8 @@ function readEnglish(word) {
 }
 
 function readRussian(word) {
-	return new Promise((resolve) => {
-		exec(`say -v Milena "${word}"`, (error, out, err) => {
+	return new Promise(function(resolve) {
+		exec(`say -v Milena "${word}"`, function(error, out, err) {
 			resolve(word);
 			if (error) {
 				console.log("error", error.message);
@@ -33,7 +33,7 @@ function readRussian(word) {
 }
 
 function delay(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+	return new Promise(function(resolve) {setTimeout(resolve, ms)});
 }
 
 export default async function(word) {

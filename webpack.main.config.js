@@ -2,7 +2,7 @@ const path = require("path");
 const merge = require("webpack-merge");
 
 const base = require("./webpack.base.config");
-const buildPath = path.resolve(__dirname, "./dist");
+const buildPath = path.resolve(__dirname, "./build");
 
 const main = merge(base, {
   entry: "./main.js",

@@ -42,12 +42,12 @@ export default function ({ words = [], lastLine = 0, }) {
     setList(words, lastLine);
     scrollToSelected(true);
 
-    setTimeout(() => {
+    setTimeout(function() {
         document.querySelector('.app-container').classList.remove('loading');
     }, 10);
 
-    document.getElementById('loadFile').addEventListener('click', () => {
-        // dialogs.prompt('What is your languages delimiter?', ' - ', (value) => {
+    document.getElementById('loadFile').addEventListener('click', function() {
+        // dialogs.prompt('What is your languages delimiter?', ' - ', function(value) {
         //     if (value) {
             const value=' - ';
                 ipcRenderer.send('asynchronous-message', `loadFile||${value}`);
@@ -58,14 +58,14 @@ export default function ({ words = [], lastLine = 0, }) {
 
     });
 
-    document.getElementById('lines').addEventListener('click', (e) => {
+    document.getElementById('lines').addEventListener('click', function(e) {
         if (e.target.classList.contains('word-item')) {
             selectWord(e.target);
             readCurrentWord();
         }
     });
 
-    document.getElementById('next').addEventListener('click', () => {
+    document.getElementById('next').addEventListener('click', function() {
         selectNext();
     });
 };

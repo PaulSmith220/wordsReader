@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron');
 import pageActions from './initPage';
 import setList from './setList';
 const path = require("path");
-const initPage = pageActions.default;
+const initPage = pageActions;
 
 import './css/main.css';
 import './assets/css/all.css';
@@ -14,11 +14,6 @@ const parseCommand = arg => {
         JSON.parse(data),
     ];
 }
-
-let config = {
-    words: [],
-    lastLine: 0,
-};
 
 let isPlaying = false;
 
@@ -33,7 +28,12 @@ fontCss.href = path.resolve(__dirname, 'assets', 'css', 'all.css');
 document.head.appendChild(fontCss);
 
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function() {
+    let config = {
+        words: [],
+        lastLine: 0,
+    };
+
     document.getElementById('play').addEventListener('click', function() {
         isPlaying = !isPlaying;
         const i = this.querySelector('i');
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+    ipcRenderer.on('asynchronous-reply', function(event, arg) {
         const [command, data] = parseCommand(arg);
         switch(command) {
             case 'initData': {
@@ -59,9 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             case 'wordPlayed': {
                 if (isPlaying) {
-                    setTimeout(() => {
-                        pageActions.selectNext();
-                    }, 1000);
+                    setTimeout(pageActions.selectNext, 1000);
                 }
                 break;
             }

@@ -4,11 +4,11 @@ import openFileDialog from './openFileDialog';
 import parseFile from './parseFiles';
 import readWord from './readWord';
 
-const response = (name, data = null) => name + '||' + JSON.stringify(data);
+const response = function(name, data = null) { return name + '||' + JSON.stringify(data) };
 
 
 export default function(store, mainWindow) {
-    ipcMain.on('asynchronous-message', async (event, arg) => {
+    ipcMain.on('asynchronous-message', async function(event, arg) {
         console.log('event recieved: ' + arg);
         const [command, args] = arg.split('||');
         switch(command) {
