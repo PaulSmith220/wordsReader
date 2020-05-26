@@ -1,9 +1,6 @@
 const { ipcRenderer } = require('electron');
 import setList from './setList';
-// import Dialogs from 'dialogs';
 import readCurrentWord from './readCurrentWord';
-
-// const dialogs = Dialogs();
 
 export function selectWord(nextNode) {
     if (nextNode) {
@@ -29,16 +26,16 @@ function scrollToSelected(jump = false) {
     }
 }
 
-export function selectNext() {
+export function selectNext(getReversed) {
     const selectedNode = document.querySelector('.word-item.selected');
     const num = parseInt(selectedNode.dataset['num'] || '1');
     const nextNode = document.querySelector(`.word-item[data-num="${1 + num}"]`);
     if (selectWord(nextNode)) {
-        readCurrentWord();
+        readCurrentWord(getReversed);
     }
 }
 
-export default function ({ words = [], lastLine = 0, }) {
+export default function ({ words = [], lastLine = 0, }, getReversed) {
     setList(words, lastLine);
     scrollToSelected(true);
 
@@ -46,27 +43,24 @@ export default function ({ words = [], lastLine = 0, }) {
         document.querySelector('.app-container').classList.remove('loading');
     }, 10);
 
-    document.getElementById('loadFile').addEventListener('click', function() {
-        // dialogs.prompt('What is your languages delimiter?', ' - ', function(value) {
-        //     if (value) {
-            const value=' - ';
-                ipcRenderer.send('asynchronous-message', `loadFile||${value}`);
-        //     } else {
-        //         console.log('user cancelled');
-        //     }
-        // });
+    document.getElementById('loadFile').addEventListener('click', async function() {
+        const value = '-';
+        ipcRenderer.send('asynchronous-message', `loadFile||${value}`);
 
     });
 
     document.getElementById('lines').addEventListener('click', function(e) {
-        if (e.target.classList.contains('word-item')) {
-            selectWord(e.target);
-            readCurrentWord();
+        console.log(e.target.parentNode, e.target);
+        const node = e.target.classList.contains('word-item') ? e.target : e.target.parentNode;
+        if (node.classList.contains('word-item')) {
+            console.log(node);
+            selectWord(node);
+            readCurrentWord(getReversed);
         }
     });
 
     document.getElementById('next').addEventListener('click', function() {
-        selectNext();
+        selectNext(getReversed);
     });
 };
 

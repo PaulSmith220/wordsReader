@@ -25,11 +25,6 @@ function createWindow () {
   // and load the index.html of the app.
   win.loadFile(
     path.join(__dirname, 'index.html')
-    // url.format({
-    //   pathname: 'index.html',
-    //   protocol: "file:",
-    //   slashes: false,
-    // })
   );
 
   // Отображаем средства разработчика.

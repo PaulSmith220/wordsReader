@@ -1104,7 +1104,10 @@ var external_child_process_ = __webpack_require__(5);
 // CONCATENATED MODULE: ./src/main/openFileDialog.js
 
 
-// const { dialog } = require('electron');
+
+var _require = __webpack_require__(0),
+    dialog = _require.dialog;
+
 var options = {
   title: 'Open a file with words',
   buttonLabel: 'Load',
@@ -1118,17 +1121,27 @@ var options = {
 /* harmony default export */ var openFileDialog = (function () {
   return new Promise( /*#__PURE__*/function () {
     var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(resolve, reject) {
+      var _yield$dialog$showOpe, cancelled, filePaths;
+
       return regenerator_default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              // const { cancelled, filePaths } = await dialog.showOpenDialog(null, options);
-              // if (cancelled || !filePaths.length) {
-              //     reject();
-              // } else {
-              resolve(filePaths[0]); // }
+              _context.next = 2;
+              return dialog.showOpenDialog(null, options);
 
-            case 1:
+            case 2:
+              _yield$dialog$showOpe = _context.sent;
+              cancelled = _yield$dialog$showOpe.cancelled;
+              filePaths = _yield$dialog$showOpe.filePaths;
+
+              if (cancelled || !filePaths.length) {
+                reject();
+              } else {
+                resolve(filePaths[0]);
+              }
+
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -1159,11 +1172,12 @@ var fs = __webpack_require__(6);
         original = _line$split2[0],
         translation = _line$split2[1];
 
-    return [original, (translation || 'No translation').replace(/\.$/, '')];
+    return [original.trim().replace(/(\.|\,)/g, ''), (translation || 'No translation').replace(/\.$/, '').replace(/(\.|\,)/g, '').trim()];
   });
   return data;
 });
 // CONCATENATED MODULE: ./src/main/readWord.js
+
 
 
 
@@ -1211,37 +1225,50 @@ function delay(ms) {
 }
 
 /* harmony default export */ var readWord = (function (_x) {
-  return readWord_ref.apply(this, arguments);
+  return _ref2.apply(this, arguments);
 });
 
-function readWord_ref() {
-  readWord_ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(word) {
+function _ref2() {
+  _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(_ref) {
+    var _ref3, original, translation, reversed, f1, f2;
+
     return regenerator_default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
-            return readEnglish(word[0]);
+            _ref3 = slicedToArray_default()(_ref, 3), original = _ref3[0], translation = _ref3[1], reversed = _ref3[2];
+            f1 = reversed ? function () {
+              return readRussian(translation);
+            } : function () {
+              return readEnglish(original);
+            };
+            f2 = !reversed ? function () {
+              return readRussian(translation);
+            } : function () {
+              return readEnglish(original);
+            };
+            _context.next = 5;
+            return f1();
 
-          case 2:
-            _context.next = 4;
+          case 5:
+            _context.next = 7;
             return delay(500);
 
-          case 4:
-            _context.next = 6;
-            return readRussian(word[1]);
+          case 7:
+            _context.next = 9;
+            return f2();
 
-          case 6:
+          case 9:
             return _context.abrupt("return", true);
 
-          case 7:
+          case 10:
           case "end":
             return _context.stop();
         }
       }
     }, _callee);
   }));
-  return readWord_ref.apply(this, arguments);
+  return _ref2.apply(this, arguments);
 }
 // CONCATENATED MODULE: ./src/main/eventsManager.js
 
@@ -1427,12 +1454,7 @@ function createWindow() {
   });
   eventsManager(main_store, win); // and load the index.html of the app.
 
-  win.loadFile(external_path_default.a.join(__dirname, 'index.html') // url.format({
-  //   pathname: 'index.html',
-  //   protocol: "file:",
-  //   slashes: false,
-  // })
-  ); // Отображаем средства разработчика.
+  win.loadFile(external_path_default.a.join(__dirname, 'index.html')); // Отображаем средства разработчика.
   // win.webContents.openDevTools();
 } // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

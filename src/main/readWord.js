@@ -36,9 +36,11 @@ function delay(ms) {
 	return new Promise(function(resolve) {setTimeout(resolve, ms)});
 }
 
-export default async function(word) {
-        await readEnglish(word[0]);
+export default async function([original, translation, reversed]) {
+		const f1 = reversed ? () => readRussian(translation) : () => readEnglish(original);
+		const f2 = !reversed ? () => readRussian(translation) : () => readEnglish(original);
+        await f1();
         await delay(500);
-        await readRussian(word[1]);
+        await f2();
         return true;
 }

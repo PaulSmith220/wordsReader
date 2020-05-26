@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron');
-import pageActions from './initPage';
+import pageActions, { selectNext } from './initPage';
+import readCurrentWord from './readCurrentWord';
 import setList from './setList';
 const path = require("path");
 const initPage = pageActions;
@@ -16,6 +17,9 @@ const parseCommand = arg => {
 }
 
 let isPlaying = false;
+let isReversed = false;
+
+const getReversed = () => isReversed;
 
 const mainCss = document.createElement('link');
 mainCss.rel = 'stylesheet';
@@ -35,12 +39,19 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     document.getElementById('play').addEventListener('click', function() {
+        console.log('play btn clicked');
         isPlaying = !isPlaying;
         const i = this.querySelector('i');
         i.classList.remove('fa-play-circle');
         i.classList.remove('fa-pause-circle');
         i.classList.add(!isPlaying ? 'fa-play-circle' : 'fa-pause-circle');
-        isPlaying && pageActions.readCurrentWord();
+        isPlaying && readCurrentWord(getReversed);
+    });
+
+    document.getElementById('reverse').addEventListener('click', function() {
+        console.log('reversing');
+        isReversed = !isReversed;
+        document.getElementById('lines').classList.toggle('reversed', isReversed);
     });
 
 
@@ -50,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
             case 'initData': {
                 console.log('init data received', data);
                 config = data;
-                initPage(data);
+                initPage(data, getReversed);
                 break;
             }
             case 'wordsUpdated': {
@@ -59,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             case 'wordPlayed': {
                 if (isPlaying) {
-                    setTimeout(pageActions.selectNext, 1000);
+                    setTimeout(() => selectNext(getReversed), 1000);
                 }
                 break;
             }

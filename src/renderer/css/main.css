@@ -22,6 +22,21 @@ body {
     transition: all 0.3s ease-out;
     opacity: 0.2;
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.word-item > span {
+    margin: 0 2px;
+}
+
+.reversed {
+    display: block;
+}
+
+.reversed .word-item {
+    flex-direction: row-reverse;
 }
 
 .word-item.selected {

@@ -1,4 +1,4 @@
-// const { dialog } = require('electron');
+const { dialog } = require('electron');
 
 const options = {
     title: 'Open a file with words',
@@ -12,11 +12,11 @@ const options = {
 
   export default function() {
     return new Promise(async function (resolve, reject) {
-        // const { cancelled, filePaths } = await dialog.showOpenDialog(null, options);
-        // if (cancelled || !filePaths.length) {
-        //     reject();
-        // } else {
+        const { cancelled, filePaths } = await dialog.showOpenDialog(null, options);
+        if (cancelled || !filePaths.length) {
+            reject();
+        } else {
             resolve(filePaths[0]);
-        // }
+        }
     });
   }

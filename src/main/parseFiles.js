@@ -6,7 +6,9 @@ export default function(filePath, delimiter) {
     const lines = file.split('\n').filter(l => l.trim() !== '');
     const data = lines.map(line => {
         const [original, translation] = line.split(delimiter);
-        return [original, (translation || 'No translation').replace(/\.$/, '')];
+        return [
+            original.trim().replace(/(\.|\,)/g, ''), 
+            (translation || 'No translation').replace(/\.$/, '').replace(/(\.|\,)/g, '').trim()];
     });
     return data;
 }
