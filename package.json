@@ -2,7 +2,7 @@
   "name": "wordsReader",
   "version": "1.0.0",
   "main": "main.js",
-  "license": "GNU GPLv3",
+  "license": "CC0-1.0",
   "scripts": {
     "pack": "electron-builder --dir",
     "dist": "npm run clean && webpack -p && electron-builder",
