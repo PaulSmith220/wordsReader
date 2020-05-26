@@ -1,5 +1,5 @@
 # wordsReader
-![GitHub Releases](https://img.shields.io/github/downloads/PaulSmith220/wordsReader/v1.0_stable/total)
+![GitHub Releases](https://img.shields.io/github/downloads/PaulSmith220/wordsReader/v1.1.0_stable/total)
 ![GitHub](https://img.shields.io/github/license/PaulSmith220/wordsReader)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/PaulSmith220/wordsReader)
 ![GitHub issues](https://img.shields.io/github/issues/PaulSmith220/wordsReader)
