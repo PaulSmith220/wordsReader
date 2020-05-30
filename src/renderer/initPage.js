@@ -60,12 +60,8 @@ export default function ({ words = [], lastLine = 0, voices = ['Allison', 'Milen
         if (node.classList.contains('word-item')) {
             console.log(node);
             selectWord(node);
-            readCurrentWord(getReversed);
+            readCurrentWord(getReversed, true);
         }
-    });
-
-    document.getElementById('next').addEventListener('click', function () {
-        selectNext(getReversed);
     });
 };
 

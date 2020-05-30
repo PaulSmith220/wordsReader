@@ -93,13 +93,19 @@ var _require = __webpack_require__(2),
     ipcRenderer = _require.ipcRenderer;
 
 /* harmony default export */ __webpack_exports__["a"] = (function (getReversed) {
+  var suppressCallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   var node = document.querySelector('.word-item.selected');
 
   if (node) {
     var original = node.dataset['orig'];
     var translation = node.dataset['trans'];
     var reversed = getReversed();
-    ipcRenderer.send('asynchronous-message', "readWord||[\"".concat(original, "\", \"").concat(translation, "\", ").concat(reversed, "]"));
+
+    if (suppressCallback) {
+      ipcRenderer.send('asynchronous-message', "readWordOnce||[\"".concat(original, "\", \"").concat(translation, "\", ").concat(reversed, "]"));
+    } else {
+      ipcRenderer.send('asynchronous-message', "readWord||[\"".concat(original, "\", \"").concat(translation, "\", ").concat(reversed, "]"));
+    }
   }
 });
 ;
@@ -250,11 +256,8 @@ function selectNext(getReversed) {
     if (node.classList.contains('word-item')) {
       console.log(node);
       selectWord(node);
-      Object(_readCurrentWord__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(getReversed);
+      Object(_readCurrentWord__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(getReversed, true);
     }
-  });
-  document.getElementById('next').addEventListener('click', function () {
-    selectNext(getReversed);
   });
 });
 ;

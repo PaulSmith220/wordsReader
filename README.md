@@ -8,7 +8,7 @@
 
 An electron app that allows you to learn words by listening to original and translation with a correct pronunciation.
 
-[🗄Download latest version (1.2.0)](https://github.com/PaulSmith220/wordsReader/releases/download/1.2.0/wordsReader-1.2.0.dmg)
+[🗄Download latest version (1.2.0)](https://github.com/PaulSmith220/wordsReader/releases/download/1.3.0/wordsReader-1.2.0.dmg)
 
 ![screenshot](screenshot.png)
 
@@ -30,7 +30,6 @@ Your choice of file and voices will be saved and used next time you run the app.
 The app allows you to run auto-reading mode or read words by selecting them manually. It remembers your last position and starts from it next time you start the app.
 
 - To read a single word - just click on it.
-- To read the next line from the current selection - click "Next"
 - To read a sequence, select your desired starting line and click the "play" button. Click it again to stop at any time.
 
 You can swap the direction of translation at any time - just click the swap button (to the left of "Play"). You can do it on-air during the sequence reading.

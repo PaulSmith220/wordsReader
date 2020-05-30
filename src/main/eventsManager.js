@@ -35,7 +35,14 @@ export default function(store, mainWindow) {
             case 'readWord': {
                 const words = JSON.parse(args);
                 await readWord(words, store.get('voices'));
+                console.log('done');
                 event.reply('asynchronous-reply', response('wordPlayed'));
+                break;
+            }
+            case 'readWordOnce': {
+                const words = JSON.parse(args);
+                await readWord(words, store.get('voices'));
+                console.log('done');
                 break;
             }
             case 'selectLine': {

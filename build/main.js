@@ -1190,6 +1190,9 @@ var fs = __webpack_require__(6);
 
 
 
+var currentReading = new Promise(function (resolve) {
+  return resolve();
+});
 
 function read(word, voice) {
   return new Promise(function (resolve) {
@@ -1220,112 +1223,139 @@ function delay(ms) {
 });
 
 function _ref2() {
-  _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee5(_ref) {
+  _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee6(_ref) {
     var _ref3,
         original,
         translation,
         reversed,
         voices,
-        f1,
-        f2,
-        _args5 = arguments;
+        _args6 = arguments;
 
-    return regenerator_default.a.wrap(function _callee5$(_context5) {
+    return regenerator_default.a.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
             _ref3 = slicedToArray_default()(_ref, 3), original = _ref3[0], translation = _ref3[1], reversed = _ref3[2];
-            voices = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : ['Allison', 'Milena'];
-            f1 = reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-              return regenerator_default.a.wrap(function _callee$(_context) {
-                while (1) {
-                  switch (_context.prev = _context.next) {
-                    case 0:
-                      _context.next = 2;
-                      return read(translation, voices[1]);
+            voices = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : ['Allison', 'Milena'];
+            _context6.next = 4;
+            return currentReading;
 
-                    case 2:
-                      return _context.abrupt("return", _context.sent);
+          case 4:
+            currentReading = new Promise( /*#__PURE__*/function () {
+              var _ref4 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee5(resolve) {
+                var f1, f2;
+                return regenerator_default.a.wrap(function _callee5$(_context5) {
+                  while (1) {
+                    switch (_context5.prev = _context5.next) {
+                      case 0:
+                        f1 = reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
+                          return regenerator_default.a.wrap(function _callee$(_context) {
+                            while (1) {
+                              switch (_context.prev = _context.next) {
+                                case 0:
+                                  _context.next = 2;
+                                  return read(translation, voices[1]);
 
-                    case 3:
-                    case "end":
-                      return _context.stop();
+                                case 2:
+                                  return _context.abrupt("return", _context.sent);
+
+                                case 3:
+                                case "end":
+                                  return _context.stop();
+                              }
+                            }
+                          }, _callee);
+                        })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2() {
+                          return regenerator_default.a.wrap(function _callee2$(_context2) {
+                            while (1) {
+                              switch (_context2.prev = _context2.next) {
+                                case 0:
+                                  _context2.next = 2;
+                                  return read(original, voices[0]);
+
+                                case 2:
+                                  return _context2.abrupt("return", _context2.sent);
+
+                                case 3:
+                                case "end":
+                                  return _context2.stop();
+                              }
+                            }
+                          }, _callee2);
+                        }));
+                        f2 = !reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3() {
+                          return regenerator_default.a.wrap(function _callee3$(_context3) {
+                            while (1) {
+                              switch (_context3.prev = _context3.next) {
+                                case 0:
+                                  _context3.next = 2;
+                                  return read(translation, voices[1]);
+
+                                case 2:
+                                  return _context3.abrupt("return", _context3.sent);
+
+                                case 3:
+                                case "end":
+                                  return _context3.stop();
+                              }
+                            }
+                          }, _callee3);
+                        })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee4() {
+                          return regenerator_default.a.wrap(function _callee4$(_context4) {
+                            while (1) {
+                              switch (_context4.prev = _context4.next) {
+                                case 0:
+                                  _context4.next = 2;
+                                  return read(original, voices[0]);
+
+                                case 2:
+                                  return _context4.abrupt("return", _context4.sent);
+
+                                case 3:
+                                case "end":
+                                  return _context4.stop();
+                              }
+                            }
+                          }, _callee4);
+                        }));
+                        _context5.next = 4;
+                        return f1();
+
+                      case 4:
+                        _context5.next = 6;
+                        return delay(500);
+
+                      case 6:
+                        _context5.next = 8;
+                        return f2();
+
+                      case 8:
+                        resolve();
+
+                      case 9:
+                      case "end":
+                        return _context5.stop();
+                    }
                   }
-                }
-              }, _callee);
-            })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2() {
-              return regenerator_default.a.wrap(function _callee2$(_context2) {
-                while (1) {
-                  switch (_context2.prev = _context2.next) {
-                    case 0:
-                      _context2.next = 2;
-                      return read(original, voices[0]);
+                }, _callee5);
+              }));
 
-                    case 2:
-                      return _context2.abrupt("return", _context2.sent);
+              return function (_x2) {
+                return _ref4.apply(this, arguments);
+              };
+            }());
+            _context6.next = 7;
+            return currentReading;
 
-                    case 3:
-                    case "end":
-                      return _context2.stop();
-                  }
-                }
-              }, _callee2);
-            }));
-            f2 = !reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3() {
-              return regenerator_default.a.wrap(function _callee3$(_context3) {
-                while (1) {
-                  switch (_context3.prev = _context3.next) {
-                    case 0:
-                      _context3.next = 2;
-                      return read(translation, voices[1]);
-
-                    case 2:
-                      return _context3.abrupt("return", _context3.sent);
-
-                    case 3:
-                    case "end":
-                      return _context3.stop();
-                  }
-                }
-              }, _callee3);
-            })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee4() {
-              return regenerator_default.a.wrap(function _callee4$(_context4) {
-                while (1) {
-                  switch (_context4.prev = _context4.next) {
-                    case 0:
-                      _context4.next = 2;
-                      return read(original, voices[0]);
-
-                    case 2:
-                      return _context4.abrupt("return", _context4.sent);
-
-                    case 3:
-                    case "end":
-                      return _context4.stop();
-                  }
-                }
-              }, _callee4);
-            }));
-            _context5.next = 6;
-            return f1();
-
-          case 6:
-            _context5.next = 8;
-            return delay(500);
+          case 7:
+            return _context6.abrupt("return", currentReading);
 
           case 8:
-            _context5.next = 10;
-            return f2();
-
-          case 10:
-            return _context5.abrupt("return", true);
-
-          case 11:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5);
+    }, _callee6);
   }));
   return _ref2.apply(this, arguments);
 }
@@ -1347,7 +1377,7 @@ var response = function response(name) {
 /* harmony default export */ var eventsManager = (function (store, mainWindow) {
   external_electron_["ipcMain"].on('asynchronous-message', /*#__PURE__*/function () {
     var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(event, arg) {
-      var _arg$split, _arg$split2, command, args, voices, filePath, data, words, num, _voices;
+      var _arg$split, _arg$split2, command, args, voices, filePath, data, words, _words, num, _voices;
 
       return regenerator_default.a.wrap(function _callee$(_context) {
         while (1) {
@@ -1356,7 +1386,7 @@ var response = function response(name) {
               console.log('event recieved: ' + arg);
               _arg$split = arg.split('||'), _arg$split2 = slicedToArray_default()(_arg$split, 2), command = _arg$split2[0], args = _arg$split2[1];
               _context.t0 = command;
-              _context.next = _context.t0 === 'getVoicesList' ? 5 : _context.t0 === 'getInitData' ? 10 : _context.t0 === 'loadFile' ? 12 : _context.t0 === 'readWord' ? 24 : _context.t0 === 'selectLine' ? 29 : _context.t0 === 'setVoices' ? 32 : 35;
+              _context.next = _context.t0 === 'getVoicesList' ? 5 : _context.t0 === 'getInitData' ? 10 : _context.t0 === 'loadFile' ? 12 : _context.t0 === 'readWord' ? 24 : _context.t0 === 'readWordOnce' ? 30 : _context.t0 === 'selectLine' ? 35 : _context.t0 === 'setVoices' ? 38 : 41;
               break;
 
             case 5:
@@ -1366,11 +1396,11 @@ var response = function response(name) {
             case 7:
               voices = _context.sent;
               event.reply('asynchronous-reply', response('voicesList', voices));
-              return _context.abrupt("break", 36);
+              return _context.abrupt("break", 42);
 
             case 10:
               event.reply('asynchronous-reply', response('initData', store.data));
-              return _context.abrupt("break", 36);
+              return _context.abrupt("break", 42);
 
             case 12:
               _context.prev = 12;
@@ -1396,23 +1426,33 @@ var response = function response(name) {
               return readWord(words, store.get('voices'));
 
             case 27:
+              console.log('done');
               event.reply('asynchronous-reply', response('wordPlayed'));
-              return _context.abrupt("break", 36);
+              return _context.abrupt("break", 42);
 
-            case 29:
-              num = parseInt(args || '0');
-              store.set('lastLine', num);
-              return _context.abrupt("break", 36);
+            case 30:
+              _words = JSON.parse(args);
+              _context.next = 33;
+              return readWord(_words, store.get('voices'));
 
-            case 32:
-              _voices = JSON.parse(args);
-              store.set('voices', _voices);
-              return _context.abrupt("break", 36);
+            case 33:
+              console.log('done');
+              return _context.abrupt("break", 42);
 
             case 35:
+              num = parseInt(args || '0');
+              store.set('lastLine', num);
+              return _context.abrupt("break", 42);
+
+            case 38:
+              _voices = JSON.parse(args);
+              store.set('voices', _voices);
+              return _context.abrupt("break", 42);
+
+            case 41:
               return _context.abrupt("return");
 
-            case 36:
+            case 42:
             case "end":
               return _context.stop();
           }
