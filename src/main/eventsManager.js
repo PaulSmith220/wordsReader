@@ -34,13 +34,18 @@ export default function(store, mainWindow) {
             }
             case 'readWord': {
                 const words = JSON.parse(args);
-                await readWord(words);
+                await readWord(words, store.get('voices'));
                 event.reply('asynchronous-reply', response('wordPlayed'));
                 break;
             }
             case 'selectLine': {
                 const num = parseInt(args || '0');
                 store.set('lastLine', num)
+                break;
+            }
+            case 'setVoices': {
+                const voices = JSON.parse(args);
+                store.set('voices', voices);
                 break;
             }
             default: return;

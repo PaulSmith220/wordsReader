@@ -1086,6 +1086,15 @@ var external_child_process_ = __webpack_require__(5);
           name: name,
           code: code
         };
+      }).filter(function (v) {
+        return v && v.code && v.code.indexOf('_') !== -1;
+      });
+      voices.sort(function (a, b) {
+        if (a.code > b.code) {
+          a.name > b.name ? -1 : 1;
+        } else {
+          return -1;
+        }
       });
       resolve(voices);
 
@@ -1182,27 +1191,9 @@ var fs = __webpack_require__(6);
 
 
 
-function readEnglish(word) {
+function read(word, voice) {
   return new Promise(function (resolve) {
-    Object(external_child_process_["exec"])("say -v Allison \"".concat(word, "\""), function (error, out, err) {
-      resolve(word);
-
-      if (error) {
-        console.log("error", error.message);
-        return;
-      }
-
-      if (err) {
-        console.log('stderr', err);
-        return;
-      }
-    });
-  });
-}
-
-function readRussian(word) {
-  return new Promise(function (resolve) {
-    Object(external_child_process_["exec"])("say -v Milena \"".concat(word, "\""), function (error, out, err) {
+    Object(external_child_process_["exec"])("say -v ".concat(voice, " -r 150 \"").concat(word, "\""), function (error, out, err) {
       resolve(word);
 
       if (error) {
@@ -1230,38 +1221,46 @@ function delay(ms) {
 
 function _ref2() {
   _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(_ref) {
-    var _ref3, original, translation, reversed, f1, f2;
+    var _ref3,
+        original,
+        translation,
+        reversed,
+        voices,
+        f1,
+        f2,
+        _args = arguments;
 
     return regenerator_default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _ref3 = slicedToArray_default()(_ref, 3), original = _ref3[0], translation = _ref3[1], reversed = _ref3[2];
+            voices = _args.length > 1 && _args[1] !== undefined ? _args[1] : ['Allison', 'Milena'];
             f1 = reversed ? function () {
-              return readRussian(translation);
+              return read(translation, voices[1]);
             } : function () {
-              return readEnglish(original);
+              return read(original, voices[0]);
             };
             f2 = !reversed ? function () {
-              return readRussian(translation);
+              return read(translation, voices[1]);
             } : function () {
-              return readEnglish(original);
+              return read(original, voices[0]);
             };
-            _context.next = 5;
+            _context.next = 6;
             return f1();
 
-          case 5:
-            _context.next = 7;
+          case 6:
+            _context.next = 8;
             return delay(500);
 
-          case 7:
-            _context.next = 9;
+          case 8:
+            _context.next = 10;
             return f2();
 
-          case 9:
+          case 10:
             return _context.abrupt("return", true);
 
-          case 10:
+          case 11:
           case "end":
             return _context.stop();
         }
@@ -1288,7 +1287,7 @@ var response = function response(name) {
 /* harmony default export */ var eventsManager = (function (store, mainWindow) {
   external_electron_["ipcMain"].on('asynchronous-message', /*#__PURE__*/function () {
     var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(event, arg) {
-      var _arg$split, _arg$split2, command, args, voices, filePath, data, words, num;
+      var _arg$split, _arg$split2, command, args, voices, filePath, data, words, num, _voices;
 
       return regenerator_default.a.wrap(function _callee$(_context) {
         while (1) {
@@ -1297,7 +1296,7 @@ var response = function response(name) {
               console.log('event recieved: ' + arg);
               _arg$split = arg.split('||'), _arg$split2 = slicedToArray_default()(_arg$split, 2), command = _arg$split2[0], args = _arg$split2[1];
               _context.t0 = command;
-              _context.next = _context.t0 === 'getVoicesList' ? 5 : _context.t0 === 'getInitData' ? 10 : _context.t0 === 'loadFile' ? 12 : _context.t0 === 'readWord' ? 24 : _context.t0 === 'selectLine' ? 29 : 32;
+              _context.next = _context.t0 === 'getVoicesList' ? 5 : _context.t0 === 'getInitData' ? 10 : _context.t0 === 'loadFile' ? 12 : _context.t0 === 'readWord' ? 24 : _context.t0 === 'selectLine' ? 29 : _context.t0 === 'setVoices' ? 32 : 35;
               break;
 
             case 5:
@@ -1307,11 +1306,11 @@ var response = function response(name) {
             case 7:
               voices = _context.sent;
               event.reply('asynchronous-reply', response('voicesList', voices));
-              return _context.abrupt("break", 33);
+              return _context.abrupt("break", 36);
 
             case 10:
               event.reply('asynchronous-reply', response('initData', store.data));
-              return _context.abrupt("break", 33);
+              return _context.abrupt("break", 36);
 
             case 12:
               _context.prev = 12;
@@ -1334,21 +1333,26 @@ var response = function response(name) {
             case 24:
               words = JSON.parse(args);
               _context.next = 27;
-              return readWord(words);
+              return readWord(words, store.get('voices'));
 
             case 27:
               event.reply('asynchronous-reply', response('wordPlayed'));
-              return _context.abrupt("break", 33);
+              return _context.abrupt("break", 36);
 
             case 29:
               num = parseInt(args || '0');
               store.set('lastLine', num);
-              return _context.abrupt("break", 33);
+              return _context.abrupt("break", 36);
 
             case 32:
+              _voices = JSON.parse(args);
+              store.set('voices', _voices);
+              return _context.abrupt("break", 36);
+
+            case 35:
               return _context.abrupt("return");
 
-            case 33:
+            case 36:
             case "end":
               return _context.stop();
           }
@@ -1439,7 +1443,8 @@ var main_store = new store_Store({
   configName: 'words-data',
   defaults: {
     words: [],
-    lastLine: 0
+    lastLine: 0,
+    voices: ['Allison', 'Milena']
   }
 });
 

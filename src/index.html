@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <style>
-      .app-container.loading {
-        opacity: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Read dat word!</title>
+  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  <style>
+    .app-container.loading {
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="controls">
       <button id="loadFile">
         <i class="fas fa-upload"></i>
         Load words
@@ -24,10 +27,26 @@
       <button id="reverse">
         <i class="fas fa-sync"></i>
       </button>
-    </header>
-    <div class="app-container loading">
-      <div id="lines"></div>
     </div>
-  
-  </body>
+    <div class="voices">
+      <span class="title">Voices: </span>
+      <div class="voice">
+        <select name="voice1" id="voice1">
+          <option value="none">Loading...</option>
+        </select>
+      </div>
+      <i class="arrow fas fa-long-arrow-alt-right" id="dirArrow"></i>
+      <div class="voice">
+        <select name="voice2" id="voice2">
+          <option value="none">Loading...</option>
+        </select>
+      </div>
+    </div>
+  </header>
+  <div class="app-container loading">
+    <div id="lines"></div>
+  </div>
+
+</body>
+
 </html>

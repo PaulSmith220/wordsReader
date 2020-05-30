@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -136,13 +136,13 @@ module.exports = require("electron");
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayWithHoles = __webpack_require__(10);
+var arrayWithHoles = __webpack_require__(11);
 
-var iterableToArrayLimit = __webpack_require__(11);
+var iterableToArrayLimit = __webpack_require__(12);
 
-var unsupportedIterableToArray = __webpack_require__(12);
+var unsupportedIterableToArray = __webpack_require__(13);
 
-var nonIterableRest = __webpack_require__(14);
+var nonIterableRest = __webpack_require__(15);
 
 function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
@@ -211,7 +211,9 @@ function selectNext(getReversed) {
   var _ref$words = _ref.words,
       words = _ref$words === void 0 ? [] : _ref$words,
       _ref$lastLine = _ref.lastLine,
-      lastLine = _ref$lastLine === void 0 ? 0 : _ref$lastLine;
+      lastLine = _ref$lastLine === void 0 ? 0 : _ref$lastLine,
+      _ref$voices = _ref.voices,
+      voices = _ref$voices === void 0 ? ['Allison', 'Milena'] : _ref$voices;
   Object(_setList__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(words, lastLine);
   scrollToSelected(true);
   setTimeout(function () {
@@ -253,7 +255,7 @@ function selectNext(getReversed) {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(15);
+module.exports = __webpack_require__(16);
 
 
 /***/ }),
@@ -678,16 +680,50 @@ module.exports = _asyncToGenerator;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function () {
+  var voicesList = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var defaultVoices = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ['Allison', 'Milena'];
+  var voiceBox1 = document.getElementById('voice1');
+  var voiceBox2 = document.getElementById('voice2');
+  var groups = voicesList.reduce(function (res, voice) {
+    res[voice.code] = res[voice.code] || [];
+    res[voice.code].push(voice);
+    return res;
+  }, {});
+  console.log(groups);
+
+  var renderGroup = function renderGroup(group) {
+    return group.map(function (v) {
+      return "<option name=\"".concat(v.name, "\" value=\"").concat(v.name, "\">").concat(v.name, "</option>");
+    }).join('\n');
+  };
+
+  var options = Object.keys(groups).sort().map(function (groupName) {
+    var voices = renderGroup(groups[groupName]);
+    return "<optgroup label=\"".concat(groupName, "\">\n").concat(voices, "\n</optgroup>");
+  }).join('\n');
+  voiceBox1.innerHTML = options;
+  voiceBox2.innerHTML = options;
+  voiceBox1.value = defaultVoices[0];
+  voiceBox2.value = defaultVoices[1];
+});
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(__dirname) {/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _initPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 /* harmony import */ var _readCurrentWord__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
-/* harmony import */ var _setList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
-/* harmony import */ var _css_main_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(17);
-/* harmony import */ var _css_main_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_css_main_css__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _assets_css_all_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(19);
-/* harmony import */ var _assets_css_all_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_assets_css_all_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _setVoicesList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+/* harmony import */ var _setList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1);
+/* harmony import */ var _css_main_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(18);
+/* harmony import */ var _css_main_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_css_main_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _assets_css_all_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(20);
+/* harmony import */ var _assets_css_all_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_assets_css_all_css__WEBPACK_IMPORTED_MODULE_6__);
 
 
 var _require = __webpack_require__(2),
@@ -697,7 +733,8 @@ var _require = __webpack_require__(2),
 
 
 
-var path = __webpack_require__(16);
+
+var path = __webpack_require__(17);
 
 var initPage = _initPage__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"];
 
@@ -714,6 +751,7 @@ var parseCommand = function parseCommand(arg) {
 
 var isPlaying = false;
 var isReversed = false;
+var voicesList = [];
 
 var getReversed = function getReversed() {
   return isReversed;
@@ -730,7 +768,8 @@ document.head.appendChild(fontCss);
 document.addEventListener("DOMContentLoaded", function () {
   var config = {
     words: [],
-    lastLine: 0
+    lastLine: 0,
+    voices: ['Allison', 'Milena']
   };
   document.getElementById('play').addEventListener('click', function () {
     console.log('play btn clicked');
@@ -745,7 +784,18 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('reversing');
     isReversed = !isReversed;
     document.getElementById('lines').classList.toggle('reversed', isReversed);
+    document.getElementById('dirArrow').classList.toggle('reversed', isReversed);
   });
+  var voiceBox1 = document.getElementById('voice1');
+  var voiceBox2 = document.getElementById('voice2');
+
+  function changeVoice() {
+    var voices = JSON.stringify([voiceBox1.value, voiceBox2.value]);
+    ipcRenderer.send('asynchronous-message', "setVoices||".concat(voices));
+  }
+
+  voiceBox1.addEventListener('change', changeVoice);
+  voiceBox2.addEventListener('change', changeVoice);
   ipcRenderer.on('asynchronous-reply', function (event, arg) {
     var _parseCommand = parseCommand(arg),
         _parseCommand2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_parseCommand, 2),
@@ -763,7 +813,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       case 'wordsUpdated':
         {
-          Object(_setList__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(data, config.lastLine);
+          Object(_setList__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"])(data, config.lastLine);
           break;
         }
 
@@ -778,16 +828,24 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
         }
 
+      case 'voicesList':
+        {
+          voicesList = data;
+          Object(_setVoicesList__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(voicesList, config.voices);
+          break;
+        }
+
       default:
         return;
     }
   });
   ipcRenderer.send('asynchronous-message', 'getInitData');
+  ipcRenderer.send('asynchronous-message', 'getVoicesList');
 });
 /* WEBPACK VAR INJECTION */}.call(this, "/"))
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function _arrayWithHoles(arr) {
@@ -797,7 +855,7 @@ function _arrayWithHoles(arr) {
 module.exports = _arrayWithHoles;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 function _iterableToArrayLimit(arr, i) {
@@ -830,10 +888,10 @@ function _iterableToArrayLimit(arr, i) {
 module.exports = _iterableToArrayLimit;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeToArray = __webpack_require__(13);
+var arrayLikeToArray = __webpack_require__(14);
 
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
@@ -847,7 +905,7 @@ function _unsupportedIterableToArray(o, minLen) {
 module.exports = _unsupportedIterableToArray;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 function _arrayLikeToArray(arr, len) {
@@ -863,7 +921,7 @@ function _arrayLikeToArray(arr, len) {
 module.exports = _arrayLikeToArray;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 function _nonIterableRest() {
@@ -873,7 +931,7 @@ function _nonIterableRest() {
 module.exports = _nonIterableRest;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1608,17 +1666,17 @@ try {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(6);
-            var content = __webpack_require__(18);
+            var content = __webpack_require__(19);
 
             content = content.__esModule ? content.default : content;
 
@@ -1638,24 +1696,24 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "body {\n    background: #F5F5F6;\n    color: #444;\n    margin: 0;\n    padding: 0;\n    display: grid;\n    grid-template-rows: min-content 1fr;\n    font-family: Arial, Helvetica, sans-serif;\n}\n\n.app-container {\n    padding: 40vh 16px;\n    text-align: center;\n    opacity: 1;\n    transition: opacity 0.5s ease-out;\n}\n\n.word-item {\n    padding: 8px;\n    margin: 6px 20vw;\n    background-color: #E1E2E1;\n    transition: all 0.3s ease-out;\n    opacity: 0.2;\n    cursor: pointer;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n}\n\n.word-item > span {\n    margin: 0 2px;\n}\n\n.reversed {\n    display: block;\n}\n\n.reversed .word-item {\n    flex-direction: row-reverse;\n}\n\n.word-item.selected {\n    background-color: #808d94;\n    color: #fff;\n    box-shadow: 0 2px 2px rgba(0,0,0, 0.5);\n    z-index: 666;\n    transform: scale(1.5, 1.5);\n    position: relative;\n    opacity: 1;\n}\n\n\nheader {\n    display: block;\n    position: sticky;\n    z-index: 999;\n    top: 0;\n    padding: 8px;\n\n    text-align: left;\n    font-size: 18px;\n    background-color: #afbdc4;\n}\n\nheader > button {\n    float: right;\n    margin-right: 16px;\n}\n", ""]);
+exports.push([module.i, "body {\n    background: #F5F5F6;\n    color: #444;\n    margin: 0;\n    padding: 0;\n    display: grid;\n    grid-template-rows: min-content 1fr;\n    font-family: Arial, Helvetica, sans-serif;\n}\n\n.app-container {\n    padding: 40vh 16px;\n    text-align: center;\n    opacity: 1;\n    transition: opacity 0.5s ease-out;\n}\n\n.word-item {\n    padding: 8px;\n    margin: 6px 20vw;\n    background-color: #E1E2E1;\n    transition: all 0.3s ease-out;\n    opacity: 0.2;\n    cursor: pointer;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n}\n\n.word-item > span {\n    margin: 0 2px;\n}\n\n.reversed {\n    display: block;\n}\n\n.reversed .word-item {\n    flex-direction: row-reverse;\n}\n\n.word-item.selected {\n    background-color: #808d94;\n    color: #fff;\n    box-shadow: 0 2px 2px rgba(0,0,0, 0.5);\n    z-index: 666;\n    transform: scale(1.5, 1.5);\n    position: relative;\n    opacity: 1;\n}\n\n\nheader {\n    display: block;\n    position: sticky;\n    z-index: 999;\n    top: 0;\n    padding: 0;\n\n    text-align: left;\n    font-size: 18px;\n    background-color: #afbdc4;\n\n    display: flex;\n    flex-direction: row-reverse;\n    align-items: center;\n    justify-content: space-between;\n    flex-wrap: wrap;\n}\n\nheader > button {\n    float: right;\n    margin-right: 16px;\n}\n\n#dirArrow.reversed {\n    transform: scaleX(-1);\n}\n\n.voices {\n    display: flex;\n    flex-direction: row;\n    margin: 6px;\n    align-items: center;\n}\n\n.voices > * {\n    margin-right: 8px;\n}\n\n.voices .voice > select {\n    font-size: 14px;\n    padding: 6px 8px;\n    color: #808d94;\n}\n\n.controls {\n    display: flex;\n    flex-direction: row-reverse;\n    margin: 0 6px;\n}\n\n.controls > button {\n    margin: 0 6px;\n}", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(6);
-            var content = __webpack_require__(20);
+            var content = __webpack_require__(21);
 
             content = content.__esModule ? content.default : content;
 
@@ -1675,27 +1733,27 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(21);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(22);
-var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(23);
-var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(24);
-var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(25);
-var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(26);
-var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(27);
-var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(28);
-var ___CSS_LOADER_URL_IMPORT_7___ = __webpack_require__(29);
-var ___CSS_LOADER_URL_IMPORT_8___ = __webpack_require__(30);
-var ___CSS_LOADER_URL_IMPORT_9___ = __webpack_require__(31);
-var ___CSS_LOADER_URL_IMPORT_10___ = __webpack_require__(32);
-var ___CSS_LOADER_URL_IMPORT_11___ = __webpack_require__(33);
-var ___CSS_LOADER_URL_IMPORT_12___ = __webpack_require__(34);
-var ___CSS_LOADER_URL_IMPORT_13___ = __webpack_require__(35);
-var ___CSS_LOADER_URL_IMPORT_14___ = __webpack_require__(36);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(22);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(23);
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(24);
+var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(25);
+var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(26);
+var ___CSS_LOADER_URL_IMPORT_4___ = __webpack_require__(27);
+var ___CSS_LOADER_URL_IMPORT_5___ = __webpack_require__(28);
+var ___CSS_LOADER_URL_IMPORT_6___ = __webpack_require__(29);
+var ___CSS_LOADER_URL_IMPORT_7___ = __webpack_require__(30);
+var ___CSS_LOADER_URL_IMPORT_8___ = __webpack_require__(31);
+var ___CSS_LOADER_URL_IMPORT_9___ = __webpack_require__(32);
+var ___CSS_LOADER_URL_IMPORT_10___ = __webpack_require__(33);
+var ___CSS_LOADER_URL_IMPORT_11___ = __webpack_require__(34);
+var ___CSS_LOADER_URL_IMPORT_12___ = __webpack_require__(35);
+var ___CSS_LOADER_URL_IMPORT_13___ = __webpack_require__(36);
+var ___CSS_LOADER_URL_IMPORT_14___ = __webpack_require__(37);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___, { hash: "?#iefix" });
@@ -1722,7 +1780,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1762,7 +1820,7 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1770,7 +1828,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-brands-400.eot");
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1778,7 +1836,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-brands-400.woff2");
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1786,7 +1844,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-brands-400.woff");
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1794,7 +1852,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-brands-400.ttf");
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1802,7 +1860,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-brands-400.svg");
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1810,7 +1868,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-regular-400.eot");
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1818,7 +1876,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-regular-400.woff2");
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1826,7 +1884,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-regular-400.woff");
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1834,7 +1892,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-regular-400.ttf");
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1842,7 +1900,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-regular-400.svg");
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1850,7 +1908,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-solid-900.eot");
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1858,7 +1916,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-solid-900.woff2");
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1866,7 +1924,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-solid-900.woff");
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1874,7 +1932,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/fa-solid-900.ttf");
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

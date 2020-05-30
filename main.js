@@ -9,6 +9,7 @@ const store = new Store({
   defaults: {
     words: [],
     lastLine: 0,
+    voices: ['Allison', 'Milena'],
   },
 });
 

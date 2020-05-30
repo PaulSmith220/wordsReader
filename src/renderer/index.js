@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron');
 import pageActions, { selectNext } from './initPage';
 import readCurrentWord from './readCurrentWord';
+import setVoicesList from './setVoicesList';
 import setList from './setList';
 const path = require("path");
 const initPage = pageActions;
@@ -18,6 +19,7 @@ const parseCommand = arg => {
 
 let isPlaying = false;
 let isReversed = false;
+let voicesList = [];
 
 const getReversed = () => isReversed;
 
@@ -36,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let config = {
         words: [],
         lastLine: 0,
+        voices: ['Allison', 'Milena'],
     };
 
     document.getElementById('play').addEventListener('click', function() {
@@ -52,7 +55,17 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('reversing');
         isReversed = !isReversed;
         document.getElementById('lines').classList.toggle('reversed', isReversed);
+        document.getElementById('dirArrow').classList.toggle('reversed', isReversed);  
     });
+
+    const voiceBox1 = document.getElementById('voice1');
+    const voiceBox2 = document.getElementById('voice2');
+    function changeVoice() {
+        const voices = JSON.stringify([voiceBox1.value, voiceBox2.value]);
+        ipcRenderer.send('asynchronous-message', `setVoices||${voices}`);
+    }
+    voiceBox1.addEventListener('change', changeVoice);
+    voiceBox2.addEventListener('change', changeVoice);
 
 
     ipcRenderer.on('asynchronous-reply', function(event, arg) {
@@ -74,8 +87,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                 break;
             }
+            case 'voicesList': {
+                voicesList = data;
+                setVoicesList(voicesList, config.voices);
+                break;
+            }
             default: return;
         }
       });
     ipcRenderer.send('asynchronous-message', 'getInitData');
+    ipcRenderer.send('asynchronous-message', 'getVoicesList');
 });

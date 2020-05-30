@@ -35,7 +35,7 @@ export function selectNext(getReversed) {
     }
 }
 
-export default function ({ words = [], lastLine = 0, }, getReversed) {
+export default function ({ words = [], lastLine = 0, voices = ['Allison', 'Milena'] }, getReversed) {
     setList(words, lastLine);
     scrollToSelected(true);
 

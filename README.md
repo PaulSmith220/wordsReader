@@ -18,7 +18,10 @@ nightmare - кошмар
 ```
 
 The app allows you to run auto-reading mode or read words by selecting them manually. It remembers your last position and starts from it next time you start the app.
-You can swap direction of translation at any time.
+
+You can swap the direction of translation at any time.
+
+You can also choose from voice packs installed on your Mac to read different languages with different voices. You can install more languages & voice packs in "System Preferences" -> "Accessibility" -> "Speech" -> "System voice"
 
 ## for Devs:
 ###
