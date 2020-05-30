@@ -8,7 +8,7 @@
 
 An electron app that allows you to learn words by listening to original and translation with a correct pronunciation.
 
-[🗄Download latest version (1.3.0)](https://github.com/PaulSmith220/wordsReader/releases/download/1.3.0/wordsReader-1.3.0.dmg)
+[🗄Download latest version (1.3.0)](https://github.com/PaulSmith220/wordsReader/releases/download/v1.3.0/wordsReader-1.3.0.dmg)
 
 ![screenshot](screenshot.png)
 
