@@ -35,21 +35,26 @@ export function selectNext(getReversed) {
     }
 }
 
-export default function ({ words = [], lastLine = 0, voices = ['Allison', 'Milena'] }, getReversed) {
+export default function ({ words = [], lastLine = 0, voices = ['Allison', 'Milena'], darkMode = false }, getReversed) {
     setList(words, lastLine);
     scrollToSelected(true);
 
-    setTimeout(function() {
+    console.log('darkMode set to ', darkMode);
+    if (darkMode) {
+        document.body.classList.add('darkMode');
+    }
+
+    setTimeout(function () {
         document.querySelector('.app-container').classList.remove('loading');
     }, 10);
 
-    document.getElementById('loadFile').addEventListener('click', async function() {
+    document.getElementById('loadFile').addEventListener('click', async function () {
         const value = '-';
         ipcRenderer.send('asynchronous-message', `loadFile||${value}`);
 
     });
 
-    document.getElementById('lines').addEventListener('click', function(e) {
+    document.getElementById('lines').addEventListener('click', function (e) {
         console.log(e.target.parentNode, e.target);
         const node = e.target.classList.contains('word-item') ? e.target : e.target.parentNode;
         if (node.classList.contains('word-item')) {
@@ -59,7 +64,7 @@ export default function ({ words = [], lastLine = 0, voices = ['Allison', 'Milen
         }
     });
 
-    document.getElementById('next').addEventListener('click', function() {
+    document.getElementById('next').addEventListener('click', function () {
         selectNext(getReversed);
     });
 };

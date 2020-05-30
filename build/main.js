@@ -86,37 +86,19 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-module.exports = require("electron");
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(10);
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 1 */
+/***/ (function(module, exports) {
 
-var arrayWithHoles = __webpack_require__(11);
-
-var iterableToArrayLimit = __webpack_require__(12);
-
-var unsupportedIterableToArray = __webpack_require__(13);
-
-var nonIterableRest = __webpack_require__(15);
-
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
-}
-
-module.exports = _slicedToArray;
+module.exports = require("electron");
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports) {
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -156,6 +138,24 @@ function _asyncToGenerator(fn) {
 }
 
 module.exports = _asyncToGenerator;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithHoles = __webpack_require__(11);
+
+var iterableToArrayLimit = __webpack_require__(12);
+
+var unsupportedIterableToArray = __webpack_require__(13);
+
+var nonIterableRest = __webpack_require__(15);
+
+function _slicedToArray(arr, i) {
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
+}
+
+module.exports = _slicedToArray;
 
 /***/ }),
 /* 4 */
@@ -1048,7 +1048,7 @@ __webpack_require__.r(__webpack_exports__);
 var external_url_ = __webpack_require__(9);
 
 // EXTERNAL MODULE: external "electron"
-var external_electron_ = __webpack_require__(0);
+var external_electron_ = __webpack_require__(1);
 var external_electron_default = /*#__PURE__*/__webpack_require__.n(external_electron_);
 
 // EXTERNAL MODULE: external "path"
@@ -1056,15 +1056,15 @@ var external_path_ = __webpack_require__(4);
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(1);
+var regenerator = __webpack_require__(0);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/slicedToArray.js
-var slicedToArray = __webpack_require__(2);
+var slicedToArray = __webpack_require__(3);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(3);
+var asyncToGenerator = __webpack_require__(2);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // EXTERNAL MODULE: external "child_process"
@@ -1114,7 +1114,7 @@ var external_child_process_ = __webpack_require__(5);
 
 
 
-var _require = __webpack_require__(0),
+var _require = __webpack_require__(1),
     dialog = _require.dialog;
 
 var options = {
@@ -1220,7 +1220,7 @@ function delay(ms) {
 });
 
 function _ref2() {
-  _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(_ref) {
+  _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee5(_ref) {
     var _ref3,
         original,
         translation,
@@ -1228,44 +1228,104 @@ function _ref2() {
         voices,
         f1,
         f2,
-        _args = arguments;
+        _args5 = arguments;
 
-    return regenerator_default.a.wrap(function _callee$(_context) {
+    return regenerator_default.a.wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context.prev = _context.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
             _ref3 = slicedToArray_default()(_ref, 3), original = _ref3[0], translation = _ref3[1], reversed = _ref3[2];
-            voices = _args.length > 1 && _args[1] !== undefined ? _args[1] : ['Allison', 'Milena'];
-            f1 = reversed ? function () {
-              return read(translation, voices[1]);
-            } : function () {
-              return read(original, voices[0]);
-            };
-            f2 = !reversed ? function () {
-              return read(translation, voices[1]);
-            } : function () {
-              return read(original, voices[0]);
-            };
-            _context.next = 6;
+            voices = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : ['Allison', 'Milena'];
+            f1 = reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
+              return regenerator_default.a.wrap(function _callee$(_context) {
+                while (1) {
+                  switch (_context.prev = _context.next) {
+                    case 0:
+                      _context.next = 2;
+                      return read(translation, voices[1]);
+
+                    case 2:
+                      return _context.abrupt("return", _context.sent);
+
+                    case 3:
+                    case "end":
+                      return _context.stop();
+                  }
+                }
+              }, _callee);
+            })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2() {
+              return regenerator_default.a.wrap(function _callee2$(_context2) {
+                while (1) {
+                  switch (_context2.prev = _context2.next) {
+                    case 0:
+                      _context2.next = 2;
+                      return read(original, voices[0]);
+
+                    case 2:
+                      return _context2.abrupt("return", _context2.sent);
+
+                    case 3:
+                    case "end":
+                      return _context2.stop();
+                  }
+                }
+              }, _callee2);
+            }));
+            f2 = !reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3() {
+              return regenerator_default.a.wrap(function _callee3$(_context3) {
+                while (1) {
+                  switch (_context3.prev = _context3.next) {
+                    case 0:
+                      _context3.next = 2;
+                      return read(translation, voices[1]);
+
+                    case 2:
+                      return _context3.abrupt("return", _context3.sent);
+
+                    case 3:
+                    case "end":
+                      return _context3.stop();
+                  }
+                }
+              }, _callee3);
+            })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee4() {
+              return regenerator_default.a.wrap(function _callee4$(_context4) {
+                while (1) {
+                  switch (_context4.prev = _context4.next) {
+                    case 0:
+                      _context4.next = 2;
+                      return read(original, voices[0]);
+
+                    case 2:
+                      return _context4.abrupt("return", _context4.sent);
+
+                    case 3:
+                    case "end":
+                      return _context4.stop();
+                  }
+                }
+              }, _callee4);
+            }));
+            _context5.next = 6;
             return f1();
 
           case 6:
-            _context.next = 8;
+            _context5.next = 8;
             return delay(500);
 
           case 8:
-            _context.next = 10;
+            _context5.next = 10;
             return f2();
 
           case 10:
-            return _context.abrupt("return", true);
+            return _context5.abrupt("return", true);
 
           case 11:
           case "end":
-            return _context.stop();
+            return _context5.stop();
         }
       }
-    }, _callee);
+    }, _callee5);
   }));
   return _ref2.apply(this, arguments);
 }
@@ -1439,12 +1499,18 @@ function parseDataFile(filePath, defaults) {
 
 
 
+
+var main_require = __webpack_require__(1),
+    systemPreferences = main_require.systemPreferences;
+
+var darkMode = systemPreferences.isDarkMode();
 var main_store = new store_Store({
   configName: 'words-data',
   defaults: {
     words: [],
     lastLine: 0,
-    voices: ['Allison', 'Milena']
+    voices: ['Allison', 'Milena'],
+    darkMode: darkMode
   }
 });
 

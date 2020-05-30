@@ -8,6 +8,11 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+body.darkMode {
+    background: #383f44;
+
+}
+
 .app-container {
     padding: 40vh 16px;
     text-align: center;
@@ -71,6 +76,16 @@ header {
 header > button {
     float: right;
     margin-right: 16px;
+}
+
+body.darkMode {
+    background: #383f44;
+    
+}
+
+body.darkMode header {
+    background-color: #4c5052;
+    color: #b3b3b3;
 }
 
 #dirArrow.reversed {

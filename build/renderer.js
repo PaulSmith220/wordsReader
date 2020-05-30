@@ -213,9 +213,17 @@ function selectNext(getReversed) {
       _ref$lastLine = _ref.lastLine,
       lastLine = _ref$lastLine === void 0 ? 0 : _ref$lastLine,
       _ref$voices = _ref.voices,
-      voices = _ref$voices === void 0 ? ['Allison', 'Milena'] : _ref$voices;
+      voices = _ref$voices === void 0 ? ['Allison', 'Milena'] : _ref$voices,
+      _ref$darkMode = _ref.darkMode,
+      darkMode = _ref$darkMode === void 0 ? false : _ref$darkMode;
   Object(_setList__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(words, lastLine);
   scrollToSelected(true);
+  console.log('darkMode set to ', darkMode);
+
+  if (darkMode) {
+    document.body.classList.add('darkMode');
+  }
+
   setTimeout(function () {
     document.querySelector('.app-container').classList.remove('loading');
   }, 10);
@@ -1703,7 +1711,7 @@ module.exports = content.locals || {};
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(7);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "body {\n    background: #F5F5F6;\n    color: #444;\n    margin: 0;\n    padding: 0;\n    display: grid;\n    grid-template-rows: min-content 1fr;\n    font-family: Arial, Helvetica, sans-serif;\n}\n\n.app-container {\n    padding: 40vh 16px;\n    text-align: center;\n    opacity: 1;\n    transition: opacity 0.5s ease-out;\n}\n\n.word-item {\n    padding: 8px;\n    margin: 6px 20vw;\n    background-color: #E1E2E1;\n    transition: all 0.3s ease-out;\n    opacity: 0.2;\n    cursor: pointer;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n}\n\n.word-item > span {\n    margin: 0 2px;\n}\n\n.reversed {\n    display: block;\n}\n\n.reversed .word-item {\n    flex-direction: row-reverse;\n}\n\n.word-item.selected {\n    background-color: #808d94;\n    color: #fff;\n    box-shadow: 0 2px 2px rgba(0,0,0, 0.5);\n    z-index: 666;\n    transform: scale(1.5, 1.5);\n    position: relative;\n    opacity: 1;\n}\n\n\nheader {\n    display: block;\n    position: sticky;\n    z-index: 999;\n    top: 0;\n    padding: 0;\n\n    text-align: left;\n    font-size: 18px;\n    background-color: #afbdc4;\n\n    display: flex;\n    flex-direction: row-reverse;\n    align-items: center;\n    justify-content: space-between;\n    flex-wrap: wrap;\n}\n\nheader > button {\n    float: right;\n    margin-right: 16px;\n}\n\n#dirArrow.reversed {\n    transform: scaleX(-1);\n}\n\n.voices {\n    display: flex;\n    flex-direction: row;\n    margin: 6px;\n    align-items: center;\n}\n\n.voices > * {\n    margin-right: 8px;\n}\n\n.voices .voice > select {\n    font-size: 14px;\n    padding: 6px 8px;\n    color: #808d94;\n}\n\n.controls {\n    display: flex;\n    flex-direction: row-reverse;\n    margin: 0 6px;\n}\n\n.controls > button {\n    margin: 0 6px;\n}", ""]);
+exports.push([module.i, "body {\n    background: #F5F5F6;\n    color: #444;\n    margin: 0;\n    padding: 0;\n    display: grid;\n    grid-template-rows: min-content 1fr;\n    font-family: Arial, Helvetica, sans-serif;\n}\n\nbody.darkMode {\n    background: #383f44;\n\n}\n\n.app-container {\n    padding: 40vh 16px;\n    text-align: center;\n    opacity: 1;\n    transition: opacity 0.5s ease-out;\n}\n\n.word-item {\n    padding: 8px;\n    margin: 6px 20vw;\n    background-color: #E1E2E1;\n    transition: all 0.3s ease-out;\n    opacity: 0.2;\n    cursor: pointer;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n}\n\n.word-item > span {\n    margin: 0 2px;\n}\n\n.reversed {\n    display: block;\n}\n\n.reversed .word-item {\n    flex-direction: row-reverse;\n}\n\n.word-item.selected {\n    background-color: #808d94;\n    color: #fff;\n    box-shadow: 0 2px 2px rgba(0,0,0, 0.5);\n    z-index: 666;\n    transform: scale(1.5, 1.5);\n    position: relative;\n    opacity: 1;\n}\n\n\nheader {\n    display: block;\n    position: sticky;\n    z-index: 999;\n    top: 0;\n    padding: 0;\n\n    text-align: left;\n    font-size: 18px;\n    background-color: #afbdc4;\n\n    display: flex;\n    flex-direction: row-reverse;\n    align-items: center;\n    justify-content: space-between;\n    flex-wrap: wrap;\n}\n\nheader > button {\n    float: right;\n    margin-right: 16px;\n}\n\nbody.darkMode {\n    background: #383f44;\n    \n}\n\nbody.darkMode header {\n    background-color: #4c5052;\n    color: #b3b3b3;\n}\n\n#dirArrow.reversed {\n    transform: scaleX(-1);\n}\n\n.voices {\n    display: flex;\n    flex-direction: row;\n    margin: 6px;\n    align-items: center;\n}\n\n.voices > * {\n    margin-right: 8px;\n}\n\n.voices .voice > select {\n    font-size: 14px;\n    padding: 6px 8px;\n    color: #808d94;\n}\n\n.controls {\n    display: flex;\n    flex-direction: row-reverse;\n    margin: 0 6px;\n}\n\n.controls > button {\n    margin: 0 6px;\n}", ""]);
 // Exports
 module.exports = exports;
 

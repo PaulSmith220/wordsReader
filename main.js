@@ -4,12 +4,16 @@ import path from 'path';
 import initEvents from './src/main/eventsManager';
 import Store from './src/main/store';
 
+const { systemPreferences } = require('electron')
+const darkMode = systemPreferences.isDarkMode();
+
 const store = new Store({
   configName: 'words-data',
   defaults: {
     words: [],
     lastLine: 0,
     voices: ['Allison', 'Milena'],
+    darkMode,
   },
 });
 

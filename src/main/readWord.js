@@ -22,8 +22,8 @@ function delay(ms) {
 
 export default async function([original, translation, reversed], voices = ['Allison', 'Milena']) {
 
-		const f1 = reversed ? () => read(translation, voices[1]) : () => read(original, voices[0]);
-		const f2 = !reversed ? () => read(translation, voices[1]) : () => read(original, voices[0]);
+		const f1 = reversed ? async () => await read(translation, voices[1]) : async () => await read(original, voices[0]);
+		const f2 = !reversed ? async () => await read(translation, voices[1]) : async () => await read(original, voices[0]);
         await f1();
         await delay(500);
         await f2();
