@@ -8,6 +8,8 @@
 
 An electron app that allows you to learn words by listening to original and translation with a correct pronunciation.
 
+[🗄Download latest version (1.2.0)](https://github.com/PaulSmith220/wordsReader/releases/download/1.2.0/wordsReader-1.2.0.dmg)
+
 ![screenshot](screenshot.png)
 
 Allows you to download your file with "-" delimiter, for example:
