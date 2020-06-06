@@ -1,57 +1,43 @@
-const path = require("path");
-const merge = require("webpack-merge");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const base = require("./webpack.base.config");
-const buildPath = path.resolve(__dirname, "./build");
-
-const renderer = merge(base, {
-  entry: "./src/renderer/index.js",
-  output: {
-    filename: "renderer.js",
-    path: buildPath
+module.exports = {
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+    mainFields: ['main', 'module', 'browser'],
   },
+  entry: './renderer/app.ts',
+  output: {
+    path: path.join(__dirname, 'build', 'renderer'),
+    filename: '[name].bundle.js',
+    publicPath: '/',
+  },
+  target: 'electron-renderer',
+  devtool: 'source-map',
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: [/node_modules/],
+        test: /\.(js|ts|tsx)$/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          }
-        }
+        },
       },
-      {
-        test: /\.css$/,
-        exclude: [/node_modules/],
-        use: [
-          'style-loader',
-          "css-loader"
-        ]
-      },
-      {
-        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/'
-            }
-          }
-        ]
-      }
-    ]
+    ],
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'build/'),
+    port: 8000,
+    stats: "minimal",
+    watchContentBase: true,
+    historyApiFallback: true,
+    open: false,
+    hot: false,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    })
+      template: "main/index.html",
+      filename: "../index.html"
+    }),
   ],
-  target: "electron-renderer"
-  // target: "web"
-});
-
-module.exports = renderer;
+};

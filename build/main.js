@@ -81,1043 +81,165 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./main/main.ts");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(10);
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = require("electron");
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-module.exports = _asyncToGenerator;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayWithHoles = __webpack_require__(11);
-
-var iterableToArrayLimit = __webpack_require__(12);
-
-var unsupportedIterableToArray = __webpack_require__(13);
-
-var nonIterableRest = __webpack_require__(15);
-
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
-}
-
-module.exports = _slicedToArray;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("path");
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = require("child_process");
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-module.exports = _classCallCheck;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-module.exports = _createClass;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("url");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var runtime = (function (exports) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator, PromiseImpl) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return PromiseImpl.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return PromiseImpl.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    if (PromiseImpl === void 0) PromiseImpl = Promise;
-
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList),
-      PromiseImpl
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  exports.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
-
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-   true ? module.exports : undefined
-));
-
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
-  Function("r", "regeneratorRuntime = r")(runtime);
-}
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-module.exports = _arrayWithHoles;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-function _iterableToArrayLimit(arr, i) {
-  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-module.exports = _iterableToArrayLimit;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayLikeToArray = __webpack_require__(14);
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
-}
-
-module.exports = _unsupportedIterableToArray;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
-  return arr2;
-}
-
-module.exports = _arrayLikeToArray;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-module.exports = _nonIterableRest;
-
-/***/ }),
-/* 16 */
+/******/ ({
+
+/***/ "./common/Message.ts":
+/*!***************************!*\
+  !*** ./common/Message.ts ***!
+  \***************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Message; });
+class Message {
+  static FromEvent(event) {
+    const [command, data] = event.split('||');
+    return new Message(command, JSON.parse(data));
+  }
 
-// EXTERNAL MODULE: external "url"
-var external_url_ = __webpack_require__(9);
+  constructor(command, argument) {
+    this.command = command;
+    this.argument = argument;
+  }
 
-// EXTERNAL MODULE: external "electron"
-var external_electron_ = __webpack_require__(1);
-var external_electron_default = /*#__PURE__*/__webpack_require__.n(external_electron_);
+  toString() {
+    return this.command + '||' + JSON.stringify(this.argument);
+  }
 
-// EXTERNAL MODULE: external "path"
-var external_path_ = __webpack_require__(4);
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
+}
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(0);
-var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+/***/ }),
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/slicedToArray.js
-var slicedToArray = __webpack_require__(3);
-var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
+/***/ "./main/EventsManager/EventsManager.ts":
+/*!*********************************************!*\
+  !*** ./main/EventsManager/EventsManager.ts ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(2);
-var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EventsManager; });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron */ "electron");
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _voiceList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./voiceList */ "./main/EventsManager/voiceList.ts");
+/* harmony import */ var _common_Message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../common/Message */ "./common/Message.ts");
+/* harmony import */ var _openFileDialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./openFileDialog */ "./main/EventsManager/openFileDialog.ts");
+/* harmony import */ var _parseFiles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./parseFiles */ "./main/EventsManager/parseFiles.ts");
+/* harmony import */ var _readWord__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./readWord */ "./main/EventsManager/readWord.ts");
 
-// EXTERNAL MODULE: external "child_process"
-var external_child_process_ = __webpack_require__(5);
-
-// CONCATENATED MODULE: ./src/main/voiceList.js
 
 
-/* harmony default export */ var voiceList = (function () {
-  return new Promise(function (resolve) {
-    Object(external_child_process_["exec"])("say -v '?'", function (error, out, err) {
-      var voices = out.split('\n').map(function (line) {
-        var _line$replace$replace = line.replace(/\t/g, ' ').replace(/\s{1,}/g, ' ').split(' '),
-            _line$replace$replace2 = slicedToArray_default()(_line$replace$replace, 2),
-            name = _line$replace$replace2[0],
-            code = _line$replace$replace2[1];
 
-        return {
-          name: name,
-          code: code
-        };
-      }).filter(function (v) {
-        return v && v.code && v.code.indexOf('_') !== -1;
-      });
-      voices.sort(function (a, b) {
-        if (a.code > b.code) {
-          a.name > b.name ? -1 : 1;
-        } else {
-          return -1;
+
+
+
+
+const reply = (event, message) => event.reply('asynchronous-reply', message.toString());
+
+class EventsManager {
+  constructor(store) {
+    this.store = store;
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(this, "events", {
+      getVoicesList: async event => {
+        const voices = await Object(_voiceList__WEBPACK_IMPORTED_MODULE_2__["default"])();
+        reply(event, new _common_Message__WEBPACK_IMPORTED_MODULE_3__["default"]('voicesList', voices));
+      },
+      getInitData: event => {
+        reply(event, new _common_Message__WEBPACK_IMPORTED_MODULE_3__["default"]('initData', this.store.data));
+      },
+      loadFile: async (event, message) => {
+        try {
+          const filePath = await Object(_openFileDialog__WEBPACK_IMPORTED_MODULE_4__["default"])();
+          const data = Object(_parseFiles__WEBPACK_IMPORTED_MODULE_5__["default"])(filePath, message.argument);
+          this.store.set('words', data);
+          reply(event, new _common_Message__WEBPACK_IMPORTED_MODULE_3__["default"]('wordsUpdated', data));
+        } catch (e) {
+          console.log('User cancelled file selection', e);
         }
-      });
-      resolve(voices);
-
-      if (error) {
-        console.log("error", error.message);
-        return;
-      }
-
-      if (err) {
-        console.log('stderr', err);
-        return;
+      },
+      readWord: async (event, message) => {
+        const words = JSON.parse(message.argument);
+        await Object(_readWord__WEBPACK_IMPORTED_MODULE_6__["default"])(words, this.store.get('voices'));
+        console.log('Done reading word');
+        reply(event, new _common_Message__WEBPACK_IMPORTED_MODULE_3__["default"]('wordPlayed', {}));
+      },
+      'readWordOnce': async (event, message) => {
+        const words = JSON.parse(message.argument);
+        await Object(_readWord__WEBPACK_IMPORTED_MODULE_6__["default"])(words, this.store.get('voices'));
+        console.log('Done reading word once');
+      },
+      selectLine: (event, message) => {
+        const num = parseInt(message.argument || '0');
+        this.store.set('lastLine', num);
+      },
+      setVoices: (event, message) => {
+        const voices = JSON.parse(message.argument);
+        this.store.set('voices', voices);
       }
     });
-  });
-});
-// CONCATENATED MODULE: ./src/main/openFileDialog.js
+  }
 
+  send(command, data = null) {
+    const message = new _common_Message__WEBPACK_IMPORTED_MODULE_3__["default"](command, data);
+    electron__WEBPACK_IMPORTED_MODULE_1__["ipcMain"].emit(message.toString());
+  }
 
+  subscribe() {
+    electron__WEBPACK_IMPORTED_MODULE_1__["ipcMain"].on('asynchronous-message', this.processEvent.bind(this));
+  }
 
-var _require = __webpack_require__(1),
-    dialog = _require.dialog;
+  async processEvent(systemEvent, event) {
+    const message = _common_Message__WEBPACK_IMPORTED_MODULE_3__["default"].FromEvent(event);
+    console.log('Event received: ', message.command);
+    console.log(message.argument);
 
-var options = {
+    if (!!this.events[message.command]) {
+      this.events[message.command](systemEvent, message);
+    }
+  }
+
+}
+
+/***/ }),
+
+/***/ "./main/EventsManager/index.ts":
+/*!*************************************!*\
+  !*** ./main/EventsManager/index.ts ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EventsManager__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EventsManager */ "./main/EventsManager/EventsManager.ts");
+
+/* harmony default export */ __webpack_exports__["default"] = (_EventsManager__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./main/EventsManager/openFileDialog.ts":
+/*!**********************************************!*\
+  !*** ./main/EventsManager/openFileDialog.ts ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const {
+  dialog
+} = __webpack_require__(/*! electron */ "electron");
+
+const options = {
   title: 'Open a file with words',
   buttonLabel: 'Load',
   filters: [{
@@ -1127,463 +249,375 @@ var options = {
   properties: ['openFile'],
   message: 'The text should be in "English word - Russian word" format'
 };
-/* harmony default export */ var openFileDialog = (function () {
-  return new Promise( /*#__PURE__*/function () {
-    var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(resolve, reject) {
-      var _yield$dialog$showOpe, cancelled, filePaths;
+/* harmony default export */ __webpack_exports__["default"] = (() => new Promise(async (resolve, reject) => {
+  const {
+    cancelled,
+    filePaths
+  } = await dialog.showOpenDialog(null, options);
 
-      return regenerator_default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return dialog.showOpenDialog(null, options);
+  if (cancelled || !filePaths.length) {
+    reject('');
+  } else {
+    resolve(filePaths[0]);
+  }
+}));
 
-            case 2:
-              _yield$dialog$showOpe = _context.sent;
-              cancelled = _yield$dialog$showOpe.cancelled;
-              filePaths = _yield$dialog$showOpe.filePaths;
+/***/ }),
 
-              if (cancelled || !filePaths.length) {
-                reject();
-              } else {
-                resolve(filePaths[0]);
-              }
+/***/ "./main/EventsManager/parseFiles.ts":
+/*!******************************************!*\
+  !*** ./main/EventsManager/parseFiles.ts ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-            case 6:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const path = __webpack_require__(/*! path */ "path");
 
-    return function (_x, _x2) {
-      return _ref.apply(this, arguments);
-    };
-  }());
-});
-// CONCATENATED MODULE: ./src/main/parseFiles.js
+const fs = __webpack_require__(/*! fs */ "fs");
 
-
-var path = __webpack_require__(4);
-
-var fs = __webpack_require__(6);
-
-/* harmony default export */ var parseFiles = (function (filePath, delimiter) {
-  var file = fs.readFileSync(path.resolve(filePath), 'utf-8');
-  var lines = file.split('\n').filter(function (l) {
-    return l.trim() !== '';
-  });
-  var data = lines.map(function (line) {
-    var _line$split = line.split(delimiter),
-        _line$split2 = slicedToArray_default()(_line$split, 2),
-        original = _line$split2[0],
-        translation = _line$split2[1];
-
+/* harmony default export */ __webpack_exports__["default"] = ((filePath, delimiter) => {
+  const file = fs.readFileSync(path.resolve(filePath), 'utf-8');
+  const lines = file.split('\n').filter(l => l.trim() !== '');
+  const data = lines.map(line => {
+    const [original, translation] = line.split(delimiter);
     return [original.trim().replace(/(\.|\,)/g, ''), (translation || 'No translation').replace(/\.$/, '').replace(/(\.|\,)/g, '').trim()];
   });
   return data;
 });
-// CONCATENATED MODULE: ./src/main/readWord.js
 
+/***/ }),
 
+/***/ "./main/EventsManager/readWord.ts":
+/*!****************************************!*\
+  !*** ./main/EventsManager/readWord.ts ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! child_process */ "child_process");
+/* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(child_process__WEBPACK_IMPORTED_MODULE_0__);
 
-var currentReading = new Promise(function (resolve) {
-  return resolve();
-});
+let currentReading = new Promise(resolve => resolve());
 
-function read(word, voice) {
-  return new Promise(function (resolve) {
-    Object(external_child_process_["exec"])("say -v ".concat(voice, " -r 150 \"").concat(word, "\""), function (error, out, err) {
-      resolve(word);
+const read = (word, voice) => new Promise(resolve => Object(child_process__WEBPACK_IMPORTED_MODULE_0__["exec"])(`say -v ${voice} -r 150 "${word}"`, (error, out, err) => {
+  resolve(word);
 
-      if (error) {
-        console.log("error", error.message);
-        return;
-      }
-
-      if (err) {
-        console.log('stderr', err);
-        return;
-      }
-    });
-  });
-}
-
-function delay(ms) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, ms);
-  });
-}
-
-/* harmony default export */ var readWord = (function (_x) {
-  return _ref2.apply(this, arguments);
-});
-
-function _ref2() {
-  _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee6(_ref) {
-    var _ref3,
-        original,
-        translation,
-        reversed,
-        voices,
-        _args6 = arguments;
-
-    return regenerator_default.a.wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            _ref3 = slicedToArray_default()(_ref, 3), original = _ref3[0], translation = _ref3[1], reversed = _ref3[2];
-            voices = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : ['Allison', 'Milena'];
-            _context6.next = 4;
-            return currentReading;
-
-          case 4:
-            currentReading = new Promise( /*#__PURE__*/function () {
-              var _ref4 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee5(resolve) {
-                var f1, f2;
-                return regenerator_default.a.wrap(function _callee5$(_context5) {
-                  while (1) {
-                    switch (_context5.prev = _context5.next) {
-                      case 0:
-                        f1 = reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-                          return regenerator_default.a.wrap(function _callee$(_context) {
-                            while (1) {
-                              switch (_context.prev = _context.next) {
-                                case 0:
-                                  _context.next = 2;
-                                  return read(translation, voices[1]);
-
-                                case 2:
-                                  return _context.abrupt("return", _context.sent);
-
-                                case 3:
-                                case "end":
-                                  return _context.stop();
-                              }
-                            }
-                          }, _callee);
-                        })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2() {
-                          return regenerator_default.a.wrap(function _callee2$(_context2) {
-                            while (1) {
-                              switch (_context2.prev = _context2.next) {
-                                case 0:
-                                  _context2.next = 2;
-                                  return read(original, voices[0]);
-
-                                case 2:
-                                  return _context2.abrupt("return", _context2.sent);
-
-                                case 3:
-                                case "end":
-                                  return _context2.stop();
-                              }
-                            }
-                          }, _callee2);
-                        }));
-                        f2 = !reversed ? /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3() {
-                          return regenerator_default.a.wrap(function _callee3$(_context3) {
-                            while (1) {
-                              switch (_context3.prev = _context3.next) {
-                                case 0:
-                                  _context3.next = 2;
-                                  return read(translation, voices[1]);
-
-                                case 2:
-                                  return _context3.abrupt("return", _context3.sent);
-
-                                case 3:
-                                case "end":
-                                  return _context3.stop();
-                              }
-                            }
-                          }, _callee3);
-                        })) : /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee4() {
-                          return regenerator_default.a.wrap(function _callee4$(_context4) {
-                            while (1) {
-                              switch (_context4.prev = _context4.next) {
-                                case 0:
-                                  _context4.next = 2;
-                                  return read(original, voices[0]);
-
-                                case 2:
-                                  return _context4.abrupt("return", _context4.sent);
-
-                                case 3:
-                                case "end":
-                                  return _context4.stop();
-                              }
-                            }
-                          }, _callee4);
-                        }));
-                        _context5.next = 4;
-                        return f1();
-
-                      case 4:
-                        _context5.next = 6;
-                        return delay(500);
-
-                      case 6:
-                        _context5.next = 8;
-                        return f2();
-
-                      case 8:
-                        resolve();
-
-                      case 9:
-                      case "end":
-                        return _context5.stop();
-                    }
-                  }
-                }, _callee5);
-              }));
-
-              return function (_x2) {
-                return _ref4.apply(this, arguments);
-              };
-            }());
-            _context6.next = 7;
-            return currentReading;
-
-          case 7:
-            return _context6.abrupt("return", currentReading);
-
-          case 8:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6);
-  }));
-  return _ref2.apply(this, arguments);
-}
-// CONCATENATED MODULE: ./src/main/eventsManager.js
-
-
-
-
-
-
-
-
-
-var response = function response(name) {
-  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  return name + '||' + JSON.stringify(data);
-};
-
-/* harmony default export */ var eventsManager = (function (store, mainWindow) {
-  external_electron_["ipcMain"].on('asynchronous-message', /*#__PURE__*/function () {
-    var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(event, arg) {
-      var _arg$split, _arg$split2, command, args, voices, filePath, data, words, _words, num, _voices;
-
-      return regenerator_default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              console.log('event recieved: ' + arg);
-              _arg$split = arg.split('||'), _arg$split2 = slicedToArray_default()(_arg$split, 2), command = _arg$split2[0], args = _arg$split2[1];
-              _context.t0 = command;
-              _context.next = _context.t0 === 'getVoicesList' ? 5 : _context.t0 === 'getInitData' ? 10 : _context.t0 === 'loadFile' ? 12 : _context.t0 === 'readWord' ? 24 : _context.t0 === 'readWordOnce' ? 30 : _context.t0 === 'selectLine' ? 35 : _context.t0 === 'setVoices' ? 38 : 41;
-              break;
-
-            case 5:
-              _context.next = 7;
-              return voiceList();
-
-            case 7:
-              voices = _context.sent;
-              event.reply('asynchronous-reply', response('voicesList', voices));
-              return _context.abrupt("break", 42);
-
-            case 10:
-              event.reply('asynchronous-reply', response('initData', store.data));
-              return _context.abrupt("break", 42);
-
-            case 12:
-              _context.prev = 12;
-              _context.next = 15;
-              return openFileDialog();
-
-            case 15:
-              filePath = _context.sent;
-              data = parseFiles(filePath, args);
-              store.set('words', data);
-              event.reply('asynchronous-reply', response('wordsUpdated', data));
-              _context.next = 24;
-              break;
-
-            case 21:
-              _context.prev = 21;
-              _context.t1 = _context["catch"](12);
-              console.log('User cancelled file selection', _context.t1);
-
-            case 24:
-              words = JSON.parse(args);
-              _context.next = 27;
-              return readWord(words, store.get('voices'));
-
-            case 27:
-              console.log('done');
-              event.reply('asynchronous-reply', response('wordPlayed'));
-              return _context.abrupt("break", 42);
-
-            case 30:
-              _words = JSON.parse(args);
-              _context.next = 33;
-              return readWord(_words, store.get('voices'));
-
-            case 33:
-              console.log('done');
-              return _context.abrupt("break", 42);
-
-            case 35:
-              num = parseInt(args || '0');
-              store.set('lastLine', num);
-              return _context.abrupt("break", 42);
-
-            case 38:
-              _voices = JSON.parse(args);
-              store.set('voices', _voices);
-              return _context.abrupt("break", 42);
-
-            case 41:
-              return _context.abrupt("return");
-
-            case 42:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[12, 21]]);
-    }));
-
-    return function (_x, _x2) {
-      return _ref.apply(this, arguments);
-    };
-  }());
-});
-;
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/classCallCheck.js
-var classCallCheck = __webpack_require__(7);
-var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/createClass.js
-var createClass = __webpack_require__(8);
-var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass);
-
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __webpack_require__(6);
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
-
-// CONCATENATED MODULE: ./src/main/store.js
-
-
-
-
-
-
-var store_Store = /*#__PURE__*/function () {
-  function Store(opts) {
-    classCallCheck_default()(this, Store);
-
-    // Renderer process has to get `app` module via `remote`, whereas the main process can get it directly
-    // app.getPath('userData') will return a string of the user's app data directory path.
-    var userDataPath = (external_electron_default.a.app || external_electron_default.a.remote.app).getPath('userData'); // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
-
-    this.path = external_path_default.a.join(userDataPath, opts.configName + '.json');
-    this.data = parseDataFile(this.path, opts.defaults);
-    console.log('Store initialized to use ' + this.path);
-  } // This will just return the property on the `data` object
-
-
-  createClass_default()(Store, [{
-    key: "get",
-    value: function get(key) {
-      return this.data[key];
-    } // ...and this will set it
-
-  }, {
-    key: "set",
-    value: function set(key, val) {
-      this.data[key] = val; // Wait, I thought using the node.js' synchronous APIs was bad form?
-      // We're not writing a server so there's not nearly the same IO demand on the process
-      // Also if we used an async API and our app was quit before the asynchronous write had a chance to complete,
-      // we might lose that data. Note that in a real app, we would try/catch this.
-
-      external_fs_default.a.writeFileSync(this.path, JSON.stringify(this.data));
-    }
-  }]);
-
-  return Store;
-}();
-
-
-
-function parseDataFile(filePath, defaults) {
-  // We'll try/catch it in case the file doesn't exist yet, which will be the case on the first application run.
-  // `fs.readFileSync` will return a JSON string which we then parse into a Javascript object
-  try {
-    return JSON.parse(external_fs_default.a.readFileSync(filePath));
-  } catch (error) {
-    console.log('unable to parse file', error); // if there was some kind of error, return the passed in defaults instead.
-
-    return defaults;
+  if (error) {
+    console.log("error", error.message);
+    return;
   }
+
+  if (err) {
+    console.log('stderr', err);
+    return;
+  }
+}));
+
+const delay = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
+
+/* harmony default export */ __webpack_exports__["default"] = (async ([original, translation, reversed], voices = ['Allison', 'Milena']) => {
+  await currentReading;
+  currentReading = new Promise(async resolve => {
+    const f1 = reversed ? async () => await read(translation, voices[1]) : async () => await read(original, voices[0]);
+    const f2 = !reversed ? async () => await read(translation, voices[1]) : async () => await read(original, voices[0]);
+    await f1();
+    await delay(500);
+    await f2();
+    resolve();
+  });
+  await currentReading;
+  return currentReading;
+});
+
+/***/ }),
+
+/***/ "./main/EventsManager/voiceList.ts":
+/*!*****************************************!*\
+  !*** ./main/EventsManager/voiceList.ts ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! child_process */ "child_process");
+/* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(child_process__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const getVoices = () => new Promise(resolve => Object(child_process__WEBPACK_IMPORTED_MODULE_0__["exec"])(`say -v '?'`, (error, out, err) => {
+  if (error) {
+    console.log("error", error.message);
+    return;
+  }
+
+  if (err) {
+    console.log('stderr', err);
+    return;
+  }
+
+  const voices = out.split('\n').map(line => {
+    const [name, code] = line.replace(/\t/g, ' ').replace(/\s{1,}/g, ' ').split(' ');
+    return {
+      name,
+      code
+    };
+  }).filter(v => v && v.code && v.code.indexOf('_') !== -1); // @ts-ignore
+
+  voices.sort((a, b) => {
+    if (a.code > b.code) {
+      a.name > b.name ? -1 : 1;
+    } else {
+      return -1;
+    }
+  });
+  resolve(voices);
+}));
+
+/* harmony default export */ __webpack_exports__["default"] = (getVoices);
+
+/***/ }),
+
+/***/ "./main/Store/ConfigFile.ts":
+/*!**********************************!*\
+  !*** ./main/Store/ConfigFile.ts ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ConfigFile; });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fs */ "fs");
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);
+
+
+class ConfigFile {
+  constructor(filePath, defaults) {
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(this, "filePath", '');
+
+    this.filePath = filePath;
+
+    if (!this.checkExists()) {
+      this.write(defaults);
+    }
+  }
+
+  checkExists() {
+    return fs__WEBPACK_IMPORTED_MODULE_1__["existsSync"](this.filePath);
+  }
+
+  read() {
+    const fileContents = fs__WEBPACK_IMPORTED_MODULE_1__["readFileSync"](this.filePath);
+    return JSON.parse(fileContents);
+  }
+
+  write(data) {
+    fs__WEBPACK_IMPORTED_MODULE_1__["writeFileSync"](this.filePath, JSON.stringify(data, null, '\t'));
+  }
+
 }
-// CONCATENATED MODULE: ./main.js
+
+/***/ }),
+
+/***/ "./main/Store/Store.ts":
+/*!*****************************!*\
+  !*** ./main/Store/Store.ts ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Store; });
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron */ "electron");
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! path */ "path");
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _ConfigFile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ConfigFile */ "./main/Store/ConfigFile.ts");
 
 
 
 
+class Store {
+  constructor(initialState) {
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(this, "data", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(this, "configFile", void 0);
+
+    const userDataPath = (electron__WEBPACK_IMPORTED_MODULE_1___default.a.app || electron__WEBPACK_IMPORTED_MODULE_1___default.a.remote.app).getPath('userData');
+    this.configFile = new _ConfigFile__WEBPACK_IMPORTED_MODULE_3__["default"](path__WEBPACK_IMPORTED_MODULE_2___default.a.join(userDataPath, initialState.configName + '.json'), initialState.defaults);
+    this.data = this.configFile.read();
+    console.log('Store initialized to use ' + this.configFile.filePath);
+    console.log('Dark mode set to ', this.data.darkMode);
+  }
+
+  get(key) {
+    return this.data[key];
+  }
+
+  set(key, val) {
+    this.data[key] = val;
+    this.configFile.write(this.data);
+  }
+
+}
+
+/***/ }),
+
+/***/ "./main/Store/index.ts":
+/*!*****************************!*\
+  !*** ./main/Store/index.ts ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ "electron");
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store */ "./main/Store/Store.ts");
 
 
-var main_require = __webpack_require__(1),
-    systemPreferences = main_require.systemPreferences;
-
-var darkMode = systemPreferences.isDarkMode();
-var main_store = new store_Store({
+const store = new _Store__WEBPACK_IMPORTED_MODULE_1__["default"]({
   configName: 'words-data',
   defaults: {
     words: [],
     lastLine: 0,
-    voices: ['Allison', 'Milena'],
-    darkMode: darkMode
+    voices: ['Allison', 'xMilena'],
+    darkMode: electron__WEBPACK_IMPORTED_MODULE_0__["nativeTheme"].shouldUseDarkColors
   }
+});
+/* harmony default export */ __webpack_exports__["default"] = (store);
+
+/***/ }),
+
+/***/ "./main/main.ts":
+/*!**********************!*\
+  !*** ./main/main.ts ***!
+  \**********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ "electron");
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ "path");
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Store */ "./main/Store/index.ts");
+/* harmony import */ var _EventsManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EventsManager */ "./main/EventsManager/index.ts");
+
+
+
+
+const eventsManager = new _EventsManager__WEBPACK_IMPORTED_MODULE_3__["default"](_Store__WEBPACK_IMPORTED_MODULE_2__["default"]);
+let mainWindow;
+process.on('uncaughtException', function (err) {
+  console.log(err);
 });
 
 function createWindow() {
-  // Создаем окно браузера.
-  var win = new external_electron_["BrowserWindow"]({
+  mainWindow = new electron__WEBPACK_IMPORTED_MODULE_0__["BrowserWindow"]({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      webSecurity: false
     }
   });
-  eventsManager(main_store, win); // and load the index.html of the app.
+  eventsManager.subscribe();
 
-  win.loadFile(external_path_default.a.join(__dirname, 'index.html')); // Отображаем средства разработчика.
-  // win.webContents.openDevTools();
-} // This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Некоторые API могут использоваться только после возникновения этого события.
+  if (true) {
+    mainWindow.loadURL(`http://localhost:8000/build`);
+  } else {}
 
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+}
 
-external_electron_["app"].whenReady().then(createWindow); // Quit when all windows are closed.
+electron__WEBPACK_IMPORTED_MODULE_0__["app"].on('ready', createWindow);
+electron__WEBPACK_IMPORTED_MODULE_0__["app"].allowRendererProcessReuse = true;
 
-external_electron_["app"].on('window-all-closed', function () {
-  external_electron_["app"].quit();
-});
-external_electron_["app"].on('activate', function () {
-  // На MacOS обычно пересоздают окно в приложении,
-  // после того, как на иконку в доке нажали и других открытых окон нету.
-  if (external_electron_["BrowserWindow"].getAllWindows().length === 0) {
-    createWindow();
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
   }
-});
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+
+/***/ }),
+
+/***/ "child_process":
+/*!********************************!*\
+  !*** external "child_process" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("child_process");
+
+/***/ }),
+
+/***/ "electron":
+/*!***************************!*\
+  !*** external "electron" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("electron");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
 
 /***/ })
-/******/ ]);
+
+/******/ });
+//# sourceMappingURL=main.js.map

@@ -1,34 +1,25 @@
-const path = require("path");
-const merge = require("webpack-merge");
+const path = require('path');
 
-const base = require("./webpack.base.config");
-const buildPath = path.resolve(__dirname, "./build");
-
-const main = merge(base, {
-  entry: "./main.js",
-  output: {
-    filename: "main.js",
-    path: buildPath
+module.exports = {
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
+  devtool: 'source-map',
+  entry: './main/main.ts',
+  output: {
+    path: path.resolve(__dirname, './build'),
+    filename: '[name].js',
+  },
+  target: 'electron-main',
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        test: /\.(js|ts|tsx)$/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
-  node: {
-    __dirname: false,
-    __filename: false
-  },
-  target: "electron-main"
-});
-
-module.exports = main;
+};
